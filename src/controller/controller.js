@@ -8,4 +8,10 @@ function FindProfile(bot, interaction) {
   );
 }
 
-module.exports = { FindProfile };
+function timeBetween(date_1, date_2) {
+  let difference = date_1.getTime() - date_2.getTime();
+  let TotalDays = (difference / 1000) / 60 ;
+  return TotalDays;
+}
+
+module.exports = { FindProfile, timeBetween };

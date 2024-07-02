@@ -1,4 +1,4 @@
-const { FindProfile } = require("../controller/controller");
+const { FindProfile, timeBetween } = require("../controller/controller");
 const { GetData, WriteData } = require("../controller/controllerData");
 const { Catch } = require("../controller/controllerPokemon");
 const Profile = require("../profile");
@@ -16,24 +16,25 @@ module.exports = {
       player = new Profile(interaction.member);
       listeProfiles.push(player);
     }
-    console.log(player);
+    if (timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(player.lastCatch)) >= 360) {
 
-    let pokemon = Catch();
-    player.inventory.push(pokemon.id);
-    player.stats.totalCatch[pokemon.rarete.stat]++;
-    player.stats.totalCatch.total++;
-    player.money += 5;
-    player.stats.totalMoney += 5;
-    player.lastCatch = DateTime.now()
-      .setZone("Europe/Paris")
-      .toISO({ includeOffset: false });
-
-    listeProfiles.forEach(joueur => {
-      if (joueur.id == player.id) {
-        joueur = player;
+      let pokemon = Catch();
+      player.inventory.push(pokemon.id);
+      player.stats.totalCatch[pokemon.rarete.stat]++;
+      player.stats.totalCatch.total++;
+      player.money += 5;
+      player.stats.totalMoney += 5;
+      player.lastCatch = DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false });
+      
+      for (let i = 0; i < listeProfiles.length; i++) {
+        if (listeProfiles[i].id == player.id) {
+          listeProfiles[i] = player
+        }
       }
-    });
-
-    WriteData("data", listeProfiles);
+      
+      WriteData("data", listeProfiles);
+    } else {
+      console.log("PAS PRET");
+    }
   },
 };
