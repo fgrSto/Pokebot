@@ -1,11 +1,21 @@
 let fs = require("fs");
+const path = require("path");
 
-function GetData() {
-  JSON.parse(fs.readFileSync(`${(__dirname, "./")}/data/data.json`));
+function GetData(file) {
+  return JSON.parse(
+    fs.readFileSync(`${(__dirname, "./")}/data/${file}.json`, "utf8")
+  );
 }
 
-function GetPokemon() {
-  JSON.parse(fs.readFileSync(`${(__dirname, "./")}/data/pokemons.json`));
+function WriteData(file, data) {
+  fs.writeFileSync(
+    `${path.join(__dirname, "../../")}/data/${file}.json`,
+    JSON.stringify(data),
+    "utf8",
+    function (err) {
+      if (err) throw err;
+    }
+  );
 }
 
-module.exports = { GetData, GetPokemon };
+module.exports = { GetData, WriteData };

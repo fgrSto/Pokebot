@@ -1,9 +1,10 @@
-const { GetData, GetPokemon } = require("./controllerData");
+const { GetData } = require("./controllerData");
 
 function Catch() {
-  let pokemons = GetPokemon();
+  let pokemons = GetData("pokemons");
   let randomNumber = Math.floor(Math.random() * pokemons.length);
   return {
+    id: pokemons[randomNumber].id,
     name: pokemons[randomNumber].name.french,
     img: pokemons[randomNumber].hires,
     rarete: FindRarity(pokemons[randomNumber]),
@@ -34,31 +35,37 @@ function FindRarity(pokemon) {
   };
   if (rarete.ULTRA_BEAST.includes(pokemon.id)) {
     return {
+      stat: "ultBeast",
       rarity: "Ultra chimère",
       price: 20,
     };
   } else if (rarete.SUB_LEGENDARY.includes(pokemon.id)) {
     return {
+      stat: "subLeg",
       rarity: "Sub Légendaire",
       price: 15,
     };
   } else if (rarete.LEGENDARY.includes(pokemon.id)) {
     return {
+      stat: "legend",
       rarity: "LÉGENDAIRE !",
       price: 25,
     };
   } else if (rarete.MYTHICAL.includes(pokemon.id)) {
     return {
+      stat: "myth",
       rarity: "MYTHIQUE !!",
       price: 35,
     };
   } else if (rarete.SPECIAL.includes(pokemon.id)) {
     return {
+      stat: "god",
       rarity: "DIEU !!!",
       price: 50,
     };
   } else {
     return {
+      stat: "standard",
       rarity: "Standard",
       price: 10,
     };
