@@ -1,0 +1,24 @@
+{
+  "name": "pokebot",
+  "version": "1.0.0",
+  "description": "pas oblige",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fgrSto/Pokebot.git"
+  },
+  "author": "Stonos - Maladarix",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fgrSto/Pokebot/issues"
+  },
+  "homepage": "https://github.com/fgrSto/Pokebot#readme",
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5",
+    "fs": "^0.0.1-security"
+  }
+}
