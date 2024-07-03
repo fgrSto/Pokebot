@@ -37,36 +37,42 @@ function FindRarity(pokemon) {
     return {
       stat: "ultBeast",
       rarity: "Ultra chimère",
+      color: "#00ff64",
       price: 20,
     };
   } else if (rarete.SUB_LEGENDARY.includes(pokemon.id)) {
     return {
       stat: "subLeg",
       rarity: "Sub Légendaire",
+      color: "#00c8ff",
       price: 15,
     };
   } else if (rarete.LEGENDARY.includes(pokemon.id)) {
     return {
       stat: "legend",
       rarity: "LÉGENDAIRE !",
+      color: "#003cff",
       price: 25,
     };
   } else if (rarete.MYTHICAL.includes(pokemon.id)) {
     return {
       stat: "myth",
       rarity: "MYTHIQUE !!",
+      color: "#e100ff",
       price: 35,
     };
   } else if (rarete.SPECIAL.includes(pokemon.id)) {
     return {
       stat: "god",
       rarity: "DIEU !!!",
+      color: "#ffbb00",
       price: 50,
     };
   } else {
     return {
       stat: "standard",
       rarity: "Standard",
+      color: "#ffffff",
       price: 10,
     };
   }

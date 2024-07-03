@@ -3,6 +3,7 @@ const bot = new Discord.Client({ intents: 3276799 });
 const loadCommands = require("./src/loaders/loadCommands.js");
 const loadSlashCommands = require("./src/loaders/loadSlashCommands");
 const { commandHandler } = require("./src/commandHandler.js");
+const { GetData, WriteData } = require("./src/controller/controllerData.js");
 require("dotenv").config();
 bot.commands = new Discord.Collection();
 
@@ -14,8 +15,18 @@ bot.on("ready", async () => {
   await loadSlashCommands(bot);
 });
 
-bot.on("interactionCreate", async (interaction) => {
+bot.on("interactionCreate", (interaction) => {
   commandHandler(bot, interaction);
+});
+
+bot.on("guildMemberUpdate", (oldMember, newMember) => {
+  let listeProfiles = GetData("data");
+  for (let i = 0; i < listeProfiles.length; i++) {
+    if (listeProfiles[i].id == oldMember.id) {
+      listeProfiles[i].displayName = newMember.displayName;
+    }
+  }
+  WriteData("data", listeProfiles);
 });
 
 bot.login(process.env.BOT_TOKEN);
