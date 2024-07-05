@@ -28,8 +28,8 @@ function toHHMMSS(secs) {
     .join("h");
 }
 
-function CheckSucces(bot, interaction, player) {
-    Succes(player).forEach(succ => {
+function CheckSucces(bot, interaction, player, pokemon) {
+    Succes(player, pokemon).forEach(succ => {
       if (succ.cond && !player.succes.includes(succ.id)) {
         SendSucces(succ, interaction)
         player.succes.push(succ.id)

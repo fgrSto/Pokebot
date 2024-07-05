@@ -8,6 +8,7 @@ function Catch() {
     name: pokemons[randomNumber].name.french,
     img: pokemons[randomNumber].hires ? pokemons[randomNumber].hires : pokemons[randomNumber].thumbnail,
     rarete: FindRarity(pokemons[randomNumber]),
+    type: pokemons[randomNumber].type,
   };
 }
 

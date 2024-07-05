@@ -20,25 +20,25 @@ module.exports = {
     let listeProfiles = GetData("data");
     let player = FindProfile(bot, interaction);
 
-    interaction.deferReply()
+    // interaction.deferReply()
 
-    let imgPoke = ["https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png", "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/002.png", "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/003.png", "https://i.pinimg.com/originals/2b/46/73/2b4673e318ab94da17bbf9eaad5b80d6.png", "https://i.pinimg.com/originals/2b/46/73/2b4673e318ab94da17bbf9eaad5b80d6.png", "https://i.pinimg.com/originals/2b/46/73/2b4673e318ab94da17bbf9eaad5b80d6.png"]
+    // let imgPoke = ["https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png", "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/002.png", "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/003.png", "https://i.pinimg.com/originals/2b/46/73/2b4673e318ab94da17bbf9eaad5b80d6.png", "https://i.pinimg.com/originals/2b/46/73/2b4673e318ab94da17bbf9eaad5b80d6.png", "https://i.pinimg.com/originals/2b/46/73/2b4673e318ab94da17bbf9eaad5b80d6.png"]
 
-    combineImage(imgPoke).then((image) => {
-      image.write('team.png',  () => {
-        setTimeout(() => {
-            interaction.editReply({embeds: [new EmbedBuilder()
-              .setTitle("Profile de X")
-              .setImage("attachment://team.png")
-            ]
-            ,files: [
-              `team.png`
-            ]
-          });
-        }, 2000);
-      })
-    })
-    return
+    // combineImage(imgPoke).then((image) => {
+    //   image.write('team.png',  () => {
+    //     setTimeout(() => {
+    //         interaction.editReply({embeds: [new EmbedBuilder()
+    //           .setTitle("Profile de X")
+    //           .setImage("attachment://team.png")
+    //         ]
+    //         ,files: [
+    //           `team.png`
+    //         ]
+    //       });
+    //     }, 2000);
+    //   })
+    // })
+    
     if (!player) {
       player = new Profile(interaction.member);
       listeProfiles.push(player);
@@ -57,11 +57,14 @@ module.exports = {
       player.stats.totalCatch.total++;
       player.money += 5;
       player.stats.totalMoney += 5;
+      pokemon.type.forEach(type => {
+        player.type[type]++
+      });
       player.lastCatch = DateTime.now()
         .setZone("Europe/Paris")
         .toISO({ includeOffset: false });
 
-      player = CheckSucces(bot, interaction, player)
+      player = CheckSucces(bot, interaction, player, pokemon)
         
       for (let i = 0; i < listeProfiles.length; i++) {
         if (listeProfiles[i].id == player.id) {

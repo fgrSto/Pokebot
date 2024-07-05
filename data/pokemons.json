@@ -6680,7 +6680,7 @@
           "english": "Mr. Mime",
           "japanese": "\u30d0\u30ea\u30e4\u30fc\u30c9",
           "chinese": "\u9b54\u5899\u4eba\u5076",
-          "french": "M. Mime"
+          "french": "M._Mime"
       },
       "type": [
           "Psychic",
@@ -23521,7 +23521,7 @@
           "english": "Mime Jr.",
           "japanese": "\u30de\u30cd\u30cd",
           "chinese": "\u9b54\u5c3c\u5c3c",
-          "french": "Mime Jr"
+          "french": "Mime_Jr."
       },
       "type": [
           "Psychic",
@@ -41045,7 +41045,7 @@
           "english": "Type: Null",
           "japanese": "\u30bf\u30a4\u30d7\uff1a\u30cc\u30eb",
           "chinese": "\u5c5e\u6027\uff1a\u7a7a",
-          "french": "Silvalli\u00e9"
+          "french": "Type: 0"
       },
       "type": [
           "Normal"
@@ -41093,7 +41093,7 @@
           "english": "Silvally",
           "japanese": "\u30b7\u30eb\u30f4\u30a1\u30c7\u30a3",
           "chinese": "\u94f6\u4f34\u6218\u517d",
-          "french": "M\u00e9t\u00e9no"
+          "french": "Silvalli\u00e9"
       },
       "type": [
           "Normal"
@@ -41139,7 +41139,7 @@
           "english": "Minior",
           "japanese": "\u30e1\u30c6\u30ce",
           "chinese": "\u5c0f\u9668\u661f",
-          "french": "Dodoala"
+          "french": "M\u00e9t\u00e9no"
       },
       "type": [
           "Rock",
@@ -41181,7 +41181,7 @@
           "english": "Komala",
           "japanese": "\u30cd\u30c3\u30b3\u30a2\u30e9",
           "chinese": "\u6811\u6795\u5c3e\u718a",
-          "french": "Boumata"
+          "french": "Dodoala"
       },
       "type": [
           "Normal"
@@ -41222,7 +41222,7 @@
           "english": "Turtonator",
           "japanese": "\u30d0\u30af\u30ac\u30e1\u30b9",
           "chinese": "\u7206\u7130\u9f9f\u517d",
-          "french": "Togedemaru"
+          "french": "Boumata"
       },
       "type": [
           "Fire",
@@ -41265,7 +41265,7 @@
           "english": "Togedemaru",
           "japanese": "\u30c8\u30b2\u30c7\u30de\u30eb",
           "chinese": "\u6258\u6208\u5fb7\u739b\u5c14",
-          "french": "Mimiqui"
+          "french": "Togedemaru"
       },
       "type": [
           "Electric",
@@ -41316,7 +41316,7 @@
           "english": "Mimikyu",
           "japanese": "\u30df\u30df\u30c3\u30ad\u30e5",
           "chinese": "\u8c1c\u62df\uff31",
-          "french": "Denticrisse"
+          "french": "Mimiqui"
       },
       "type": [
           "Ghost",
@@ -41358,7 +41358,7 @@
           "english": "Bruxish",
           "japanese": "\u30cf\u30ae\u30ae\u30b7\u30ea",
           "chinese": "\u78e8\u7259\u5f69\u76ae\u9c7c",
-          "french": "Dra\u00efeul"
+          "french": "Denticrisse"
       },
       "type": [
           "Water",
@@ -41408,7 +41408,7 @@
           "english": "Drampa",
           "japanese": "\u30b8\u30b8\u30fc\u30ed\u30f3",
           "chinese": "\u8001\u7fc1\u9f99",
-          "french": "Sinistrail"
+          "french": "Dra\u00efeul"
       },
       "type": [
           "Normal",
@@ -41459,7 +41459,7 @@
           "english": "Dhelmise",
           "japanese": "\u30c0\u30c0\u30ea\u30f3",
           "chinese": "\u7834\u7834\u8235\u8f6e",
-          "french": "B\u00e9b\u00e9caille"
+          "french": "Sinistrail"
       },
       "type": [
           "Ghost",
@@ -41501,7 +41501,7 @@
           "english": "Jangmo-o",
           "japanese": "\u30b8\u30e3\u30e9\u30b3",
           "chinese": "\u5fc3\u9cde\u5b9d",
-          "french": "\u00c9ca\u00efd"
+          "french": "B\u00e9b\u00e9caille"
       },
       "type": [
           "Dragon"
@@ -41557,7 +41557,7 @@
           "english": "Hakamo-o",
           "japanese": "\u30b8\u30e3\u30e9\u30f3\u30b4",
           "chinese": "\u9cde\u7532\u9f99",
-          "french": "\u00c9ka\u00efser"
+          "french": "\u00c9ca\u00efd"
       },
       "type": [
           "Dragon",
@@ -41618,7 +41618,7 @@
           "english": "Kommo-o",
           "japanese": "\u30b8\u30e3\u30e9\u30e9\u30f3\u30ac",
           "chinese": "\u6756\u5c3e\u9cde\u7532\u9f99",
-          "french": "Tokorico"
+          "french": "\u00c9ka\u00efser"
       },
       "type": [
           "Dragon",
@@ -41673,7 +41673,7 @@
           "english": "Tapu Koko",
           "japanese": "\u30ab\u30d7\u30fb\u30b3\u30b1\u30b3",
           "chinese": "\u5361\u749e\u30fb\u9e23\u9e23",
-          "french": "Tokopiyon"
+          "french": "Tokorico"
       },
       "type": [
           "Electric",
@@ -41719,7 +41719,7 @@
           "english": "Tapu Lele",
           "japanese": "\u30ab\u30d7\u30fb\u30c6\u30c6\u30d5",
           "chinese": "\u5361\u749e\u30fb\u8776\u8776",
-          "french": "Tokotoro"
+          "french": "Tokopiyon"
       },
       "type": [
           "Psychic",
@@ -41765,7 +41765,7 @@
           "english": "Tapu Bulu",
           "japanese": "\u30ab\u30d7\u30fb\u30d6\u30eb\u30eb",
           "chinese": "\u5361\u749e\u30fb\u54de\u54de",
-          "french": "Tokopisco"
+          "french": "Tokotoro"
       },
       "type": [
           "Grass",
