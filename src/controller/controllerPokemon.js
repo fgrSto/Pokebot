@@ -6,7 +6,7 @@ function Catch() {
   return {
     id: pokemons[randomNumber].id,
     name: pokemons[randomNumber].name.french,
-    img: pokemons[randomNumber].hires,
+    img: pokemons[randomNumber].hires ? pokemons[randomNumber].hires : pokemons[randomNumber].thumbnail,
     rarete: FindRarity(pokemons[randomNumber]),
   };
 }

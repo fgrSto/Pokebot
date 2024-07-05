@@ -3,6 +3,7 @@ const {
   FindProfile,
   timeBetween,
   toHHMMSS,
+  CheckSucces,
 } = require("../controller/controller");
 const { GetData, WriteData } = require("../controller/controllerData");
 const { Catch } = require("../controller/controllerPokemon");
@@ -28,7 +29,7 @@ module.exports = {
           DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })
         ),
         new Date(player.lastCatch)
-      ) >= 21600 //21600s = 6h
+      ) >= 1 //21600s = 6h
     ) {
       let pokemon = Catch();
       player.inventory.push(pokemon.id);
@@ -40,18 +41,21 @@ module.exports = {
         .setZone("Europe/Paris")
         .toISO({ includeOffset: false });
 
+      player = CheckSucces(bot, interaction, player)
+        
       for (let i = 0; i < listeProfiles.length; i++) {
         if (listeProfiles[i].id == player.id) {
           listeProfiles[i] = player;
         }
       }
-
+      console.log(listeProfiles[0].stats);
       WriteData("data", listeProfiles);
+
+
       interaction.reply({embeds: [new EmbedBuilder()
         .setColor(pokemon.rarete.color)
-        .setTitle(`${player.displayName} a attrapé __${pokemon.name}__ !`)
         .setAuthor({name: interaction.member.user.globalName, iconURL: `https://cdn.discordapp.com/avatars/${interaction.member.id}/${interaction.member.user.avatar}.png`})
-        .setDescription(`Rareté : **${pokemon.rarete.rarity}** \n` + "`+5 💵`")
+        .setDescription(`**${player.displayName} a attrapé [__${pokemon.name}__](<https://www.pokepedia.fr/${pokemon.name}>) !** \n \nRareté : **${pokemon.rarete.rarity}** \n` + "`+5 💵`")
         .setThumbnail(pokemon.img)
         .setFooter({text: `\u200b`, iconURL: `https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/770px-Pok%C3%A9_Ball_icon.svg.png`})
         .setTimestamp()

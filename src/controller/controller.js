@@ -1,5 +1,7 @@
 const { GetData, WriteData } = require("./controllerData");
 const Profile = require("../profile");
+const { Succes } = require("../succes");
+const { SendSucces } = require("./controllerMessages");
 
 function FindProfile(bot, interaction) {
   let listeProfiles = GetData("data");
@@ -26,4 +28,14 @@ function toHHMMSS(secs) {
     .join("h");
 }
 
-module.exports = { FindProfile, timeBetween, toHHMMSS };
+function CheckSucces(bot, interaction, player) {
+    Succes(player).forEach(succ => {
+      if (succ.cond && !player.succes.includes(succ.id)) {
+        SendSucces(succ, interaction)
+        player.succes.push(succ.id)
+      }
+    });
+    return player
+}
+
+module.exports = { FindProfile, timeBetween, toHHMMSS, CheckSucces };

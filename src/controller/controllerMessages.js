@@ -10,4 +10,16 @@ function SendError(message, interaction) {
   });
 }
 
-module.exports = { SendError };
+function SendSucces(succ, interaction) {
+  setTimeout(() => {
+    interaction.channel.send({embeds: [new EmbedBuilder()
+      .setColor("#ffdd00")
+      .setTitle(`**► __${succ.name}__ ◄**`)
+      .setAuthor({name: `${interaction.member.user.globalName} a débloqué un succès`, iconURL: `https://cdn.discordapp.com/avatars/${interaction.member.id}/${interaction.member.user.avatar}.png`})
+      .setDescription(`> *${succ.desc}*`)
+      .setThumbnail("https://i.imgur.com/4dGt5Aj.gif")
+    ]})
+  }, 500);
+}
+
+module.exports = { SendError, SendSucces };
