@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/fgrSto/Pokebot#readme",
   "dependencies": {
+    "combine-image": "^1.0.3",
     "discord.js": "^14.15.0",
     "dotenv": "^16.4.5",
     "fs": "^0.0.1-security",

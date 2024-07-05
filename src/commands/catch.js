@@ -9,6 +9,7 @@ const { GetData, WriteData } = require("../controller/controllerData");
 const { Catch } = require("../controller/controllerPokemon");
 const Profile = require("../profile");
 const { DateTime } = require("luxon");
+const combineImage = require('combine-image')
 const { SendError } = require("../controller/controllerMessages");
 
 module.exports = {
@@ -19,6 +20,25 @@ module.exports = {
     let listeProfiles = GetData("data");
     let player = FindProfile(bot, interaction);
 
+    interaction.deferReply()
+
+    let imgPoke = ["https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png", "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/002.png", "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/003.png", "https://i.pinimg.com/originals/2b/46/73/2b4673e318ab94da17bbf9eaad5b80d6.png", "https://i.pinimg.com/originals/2b/46/73/2b4673e318ab94da17bbf9eaad5b80d6.png", "https://i.pinimg.com/originals/2b/46/73/2b4673e318ab94da17bbf9eaad5b80d6.png"]
+
+    combineImage(imgPoke).then((image) => {
+      image.write('team.png',  () => {
+        setTimeout(() => {
+            interaction.editReply({embeds: [new EmbedBuilder()
+              .setTitle("Profile de X")
+              .setImage("attachment://team.png")
+            ]
+            ,files: [
+              `team.png`
+            ]
+          });
+        }, 2000);
+      })
+    })
+    return
     if (!player) {
       player = new Profile(interaction.member);
       listeProfiles.push(player);
@@ -48,7 +68,6 @@ module.exports = {
           listeProfiles[i] = player;
         }
       }
-      console.log(listeProfiles[0].stats);
       WriteData("data", listeProfiles);
 
 
