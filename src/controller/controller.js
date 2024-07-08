@@ -38,9 +38,8 @@ function CheckSucces(bot, interaction, player, pokemon) {
   return player;
 }
 
-function SendProfile(user, interaction) {
-  console.log(timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })),new Date(user.lastCatch)));
-  interaction.editReply({
+function embedProfile(user) {
+  return {
     embeds: [new EmbedBuilder()
       .setColor("#64c8c8")
       .setTitle(`Profil de ${user.displayName}`)
@@ -56,15 +55,16 @@ function SendProfile(user, interaction) {
     ], files: [
       "team.png"
     ]
-  }).then(sent => {
-    let profile = {prm: user,dex: interaction.member}
-    let msg = sent
+  }
+}
 
-    value.lasMsgProfil = msg
-    value.lastProfil = profile
+function SendProfile(user, interaction) {
+  interaction.editReply(embedProfile(user)).then(sent => {
+    value.lasMsgProfil = sent
+    value.lastProfil = user
 
     setTimeout(() => {
-      if (sent.id == msg.id) {
+      if (sent.id == sent.id) {
         value.lastProfil = null
         value.lasMsgProfil = null
         sent.delete()
@@ -80,5 +80,6 @@ module.exports = {
   timeBetween,
   toHHMMSS,
   CheckSucces,
-  SendProfile
+  SendProfile,
+  embedProfile
 };

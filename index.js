@@ -4,10 +4,18 @@ const loadCommands = require("./src/loaders/loadCommands.js");
 const loadSlashCommands = require("./src/loaders/loadSlashCommands");
 const { commandHandler } = require("./src/commandHandler.js");
 const { GetData, WriteData } = require("./src/controller/controllerData.js");
+const value = require("./src/value.js");
+const { embedProfile } = require("./src/controller/controller.js");
 require("dotenv").config();
 bot.commands = new Discord.Collection();
 
 loadCommands(bot);
+
+setInterval(() => { //update profiles
+  if(value.lastProfil != null) {
+    value.lasMsgProfil.edit(embedProfile(value.lastProfil))
+  } 
+}, 30000);
 
 bot.on("ready", async () => {
   console.log("bot online");

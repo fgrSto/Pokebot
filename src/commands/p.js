@@ -55,6 +55,6 @@ module.exports = {
                 SendProfile(player, interaction)
             })
         })
-    }, 500);
+    }, 700);
     },
 };
