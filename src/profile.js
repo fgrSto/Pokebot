@@ -2,6 +2,7 @@ class Profile {
   constructor(user) {
     this.id = user.user.id;
     this.displayName = user.nickname ? user.nickname : user.user.globalName;
+    this.avatar = user.user.avatar
     this.inventory = [];
     this.team = [];
     this.bagdes = [];

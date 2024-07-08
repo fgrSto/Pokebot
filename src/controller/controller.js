@@ -1,13 +1,13 @@
-const { GetData, WriteData } = require("./controllerData");
-const Profile = require("../profile");
+const { GetData } = require("./controllerData");
 const { Succes } = require("../succes");
 const { SendSucces } = require("./controllerMessages");
+const { EmbedBuilder } = require("discord.js");
+const { DateTime } = require("luxon");
+const value = require("../value")
 
-function FindProfile(bot, interaction) {
+function FindProfile(bot, member) {
   let listeProfiles = GetData("data");
-  return listeProfiles.find(
-    (player) => player.id == interaction.member.user.id
-  );
+  return listeProfiles.find((player) => player.id == member.user.id);
 }
 
 function timeBetween(date_1, date_2) {
@@ -29,13 +29,56 @@ function toHHMMSS(secs) {
 }
 
 function CheckSucces(bot, interaction, player, pokemon) {
-    Succes(player, pokemon).forEach(succ => {
-      if (succ.cond && !player.succes.includes(succ.id)) {
-        SendSucces(succ, interaction)
-        player.succes.push(succ.id)
-      }
-    });
-    return player
+  Succes(player, pokemon).forEach((succ) => {
+    if (succ.cond && !player.succes.includes(succ.id)) {
+      SendSucces(succ, interaction);
+      player.succes.push(succ.id);
+    }
+  });
+  return player;
 }
 
-module.exports = { FindProfile, timeBetween, toHHMMSS, CheckSucces };
+function SendProfile(user, interaction) {
+  console.log(timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })),new Date(user.lastCatch)));
+  interaction.editReply({
+    embeds: [new EmbedBuilder()
+      .setColor("#64c8c8")
+      .setTitle(`Profil de ${user.displayName}`)
+      .setThumbnail(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`)
+      .setDescription(user.badges ? user.badges.join(" ") : "\u200b")
+      .addFields(
+        {name: `Argent 💵`, value: `${user.money} $`, inline: true},
+        {name: `Prochain catch <:pokeball:1259699629025398894>`, value: timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })),new Date(user.lastCatch)) <= 21600 ? `🔴 ${toHHMMSS(21600 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })),new Date(user.lastCatch)))}`: `🟢 Disponible`, inline: true},
+        {name: `Succès 🏆`, value: `${user.succes.length} / ${Succes(user).length}`, inline: true},
+        {name: "\u200b", value: `**Équipe :**`}
+      )
+      .setImage("attachment://team.png")
+    ], files: [
+      "team.png"
+    ]
+  }).then(sent => {
+    let profile = {prm: user,dex: interaction.member}
+    let msg = sent
+
+    value.lasMsgProfil = msg
+    value.lastProfil = profile
+
+    setTimeout(() => {
+      if (sent.id == msg.id) {
+        value.lastProfil = null
+        value.lasMsgProfil = null
+        sent.delete()
+      } else {
+        sent.delete()
+      }
+    }, 300000);
+  })
+}
+
+module.exports = {
+  FindProfile,
+  timeBetween,
+  toHHMMSS,
+  CheckSucces,
+  SendProfile
+};

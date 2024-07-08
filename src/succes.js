@@ -1,4 +1,4 @@
-function Succes(user, pokemon) {
+function Succes(user, pokemon = 0) {
     return [
         {id: 1, name: "Le départ", cond: user.stats.totalCatch.total >= 1, desc: "Attraper son 1er pokémon"},
         {id: 2, name: "Scout", cond: user.stats.totalCatch.total >= 10, desc: "Attraper 10 pokémons"},
@@ -9,6 +9,7 @@ function Succes(user, pokemon) {
         {id: 7, name: "Dresseur d'élite", cond: user.stats.totalCatch.total >= 750, desc: "Attraper 750 pokémons"},
         {id: 8, name: "Maître pokémon", cond: user.stats.totalCatch.total >= 1000, desc: "Attraper 1000 pokémons"},
 
+        // 100 -> 500 -> 1000
         {id: 31, name: "Entomomaniac", cond: user.type.Bug >= 25, desc: "Attraper 25 pokémons de type insecte"},
         {id: 32, name: "Occultiste", cond: user.type.Dark >= 25, desc: "Attraper 25 pokémons de type ténèbre"},
         {id: 33, name: "Dracologue", cond: user.type.Dragon >= 25, desc: "Attraper 25 pokémons de type dragon"},
@@ -53,37 +54,31 @@ function Succes(user, pokemon) {
         {id: 102, name: "De retour pour vous jouer un mauvais tour", cond: pokemon.id == 52, desc: "Attraper un membre de la Team Rocket"},
         {id: 103, name: "Pika pi !", cond: pokemon.id == 25, desc: "Attraper le compagnon de Sacha"},
         {id: 104, name: "???", cond: pokemon.id == 201, desc: "<:Zarbi:1258892031829479495><:Zarbi:1258892153174753393><:Zarbi:1258892153174753393><:Zarbi:1258892594910593175><:Zarbi:1258892031829479495><:Zarbi:1258892116751290440><:Zarbi:1258892072811757581><:Zarbi:1258892594910593175> <:Zarbi:1258892606835003496><:Zarbi:1258892099898708089> <:Zarbi:1258892185160650782><:Zarbi:1258892031829479495><:Zarbi:1258892594910593175><:Zarbi:1258892059293782176><:Zarbi:1258892087991074898>"},
-        {id: 105, name: "⠨⠇⠑ ⠗⠕⠊ ⠙⠑⠎ ⠉⠕⠇⠕⠎⠎⠑⠎", cond: pokemon.id == 486, desc: "⠨⠁⠞⠞⠗⠁⠏⠑⠗ ⠥⠝ ⠨⠗⠿⠛⠊⠛⠊⠛⠁⠎"},
+        {id: 105, name: "⠨⠇⠑ ⠗⠕⠊ ⠙⠑⠎ ⠉⠕⠇⠕⠎⠎⠑⠎", cond: pokemon.id == 486, desc: "⠨⠁⠞⠞⠗⠁⠏⠑⠗ ⠥⠝ ⠨⠗⠿⠛⠊⠛⠊⠛⠁⠎"}
 
-        // {id: 201, name: "Dans les pas de Pierre", cond: user.team = [74, 95], desc: "Marcher dans les pas de Pierre"},
-        // {id: 202, name: "Dans les pas de Ondine", cond: user.team = [120, 121], desc: "Marcher dans les pas de Ondie"},
-        // {id: 203, name: "Dans les pas de Giovanni", cond: user.team = [53], desc: "Marcher dans les pas de Giovanni"},
-        // {id: 204, name: "Dans les pas de Blue", cond: user.team = [133], desc: "Marcher dans les pas de Blue"},
-        // {id: 205, name: "Dans les pas d' Arthur", cond: user.team = [262, 42, 319], desc: "Marcher dans les pas d' Arthur"},
-        // {id: 206, name: "Dans les pas de Max", cond: user.team = [262, 42, 323], desc: "Marcher dans les pas de Max"},
-        // {id: 207, name: "Dans les pas de Pierre Rochard", cond: user.team = [227, 348, 346, 306, 344, 376], desc: "Marcher dans les pas de Pierre Rochard"},
-        // {id: 208, name: "Dans les pas d' Hélio", cond: user.team = [215, 42, 198], desc: "Marcher dans les pas d' Hélio"},
-        // {id: 209, name: "Dans les pas de Cynthia", cond: user.team = [442, 350, 448, 423, 407, 445], desc: "Marcher dans les pas de Cynthia"},
-        // {id: 210, name: "Dans les pas de Rachid", cond: user.team = [506, 511], desc: "Marcher dans les pas de Rachid"},
-        // {id: 211, name: "Dans les pas d' Iris", cond: user.team = [611, 621, 612], desc: "Marcher dans les pas d' Iris"},
+        // Include ?
+        // {id: 201, name: "Dans les pas de Pierre", cond: user.team == [74, 95], desc: "Marcher dans les pas de Gabah"},
+        // {id: 202, name: "Dans les pas de Ondine", cond: user.team == [120, 121], desc: "Marcher dans les pas de Ondie"},
+        // {id: 203, name: "Dans les pas de Giovanni", cond: user.team == [53], desc: "Marcher dans les pas de Giovanni"},
+        // {id: 204, name: "Dans les pas de Blue", cond: user.team == [133], desc: "Marcher dans les pas de Blue"},
+        // {id: 205, name: "Dans les pas d' Arthur", cond: user.team == [262, 42, 319], desc: "Marcher dans les pas d' Arthur"},
+        // {id: 206, name: "Dans les pas de Max", cond: user.team == [262, 42, 323], desc: "Marcher dans les pas de Max"},
+        // {id: 207, name: "Dans les pas de Pierre Rochard", cond: user.team == [227, 348, 346, 306, 344, 376], desc: "Marcher dans les pas de Pierre Rochard"},
+        // {id: 208, name: "Dans les pas d' Hélio", cond: user.team == [215, 42, 198], desc: "Marcher dans les pas d' Hélio"},
+        // {id: 209, name: "Dans les pas de Cynthia", cond: user.team == [442, 350, 448, 423, 407, 445], desc: "Marcher dans les pas de Cynthia"},
+        // {id: 210, name: "Dans les pas de Rachid", cond: user.team == [506, 511], desc: "Marcher dans les pas de Rachid"},
+        // {id: 211, name: "Dans les pas d' Iris", cond: user.team == [611, 621, 612], desc: "Marcher dans les pas d' Iris"},
         // {id: 212, name: "Dans les pas de Chammal et Chamsin", cond: user.team = [569, 601, 632, 596], desc: "Marcher dans les pas des Chefs Métro"},
-        // {id: 213, name: "Dans les pas de Goyah", cond: user.team = [617, 584, 626, 589, 621, 637], desc: "Marcher dans les pas de Goyah"},
-        // {id: 214, name: "Dans les pas de Lysandre", cond: user.team = [619, 668, 198, 130], desc: "Marcher dans les pas de Lysandre"},
-        // {id: 215, name: "Dans les pas de Lem", cond: user.team = [587, 82, 695], desc: "Marcher dans les pas de Lem"},
-        // {id: 216, name: "Dans les pas de Dianthéa", cond: user.team = [701, 706, 699, 711, 697, 282], desc: "Marcher dans les pas de Dianthéa"},
-        // {id: 217, name: "Dans les pas de Pectorius", cond: user.team = [56, 296, 739], desc: "Marcher dans les pas du Doyen"},
-        // {id: 218, name: "Dans les pas de Guzma", cond: user.team = [768, 168], desc: "Marcher dans les pas de Guzma"},
-        // {id: 219, name: "Dans les pas d' Elsa-Mina", cond: user.team = [36, 549, 760, 350, 429], desc: "Marcher dans les pas d' Elsa-Mina"},
-        // {id: 220, name: "Dans les pas de Travis", cond: user.team = [303, 78, 282, 858], desc: "Marcher dans les pas du Champion"},
-        // {id: 221, name: "Dans les pas de Rosemary", cond: user.team = [510, 877, 454, 861, 560], desc: "Marcher dans les pas de la Championne"},
-        // {id: 222, name: "Dans les pas de Tarak", cond: user.team = [681, 537, 887, 815, 612, 6], desc: "Marcher dans les pas du Maître Feu"},
-
-
-
-
-        {id: 999, name: "", cond: "", desc: "placeholder"}
-        
-
+        // {id: 213, name: "Dans les pas de Goyah", cond: user.team == [617, 584, 626, 589, 621, 637], desc: "Marcher dans les pas de Goyah"},
+        // {id: 214, name: "Dans les pas de Lysandre", cond: user.team == [619, 668, 198, 130], desc: "Marcher dans les pas de Lysandre"},
+        // {id: 215, name: "Dans les pas de Lem", cond: user.team == [587, 82, 695], desc: "Marcher dans les pas de Lem"},
+        // {id: 216, name: "Dans les pas de Dianthéa", cond: user.team == [701, 706, 699, 711, 697, 282], desc: "Marcher dans les pas de Dianthéa"},
+        // {id: 217, name: "Dans les pas de Pectorius", cond: user.team == [56, 296, 739], desc: "Marcher dans les pas du Doyen"},
+        // {id: 218, name: "Dans les pas de Guzma", cond: user.team == [768, 168], desc: "Marcher dans les pas de Guzma"},
+        // {id: 219, name: "Dans les pas d' Elsa-Mina", cond: user.team == [36, 549, 760, 350, 429], desc: "Marcher dans les pas d' Elsa-Mina"},
+        // {id: 220, name: "Dans les pas de Travis", cond: user.team == [303, 78, 282, 858], desc: "Marcher dans les pas du Champion"},
+        // {id: 221, name: "Dans les pas de Rosemary", cond: user.team == [510, 877, 454, 861, 560], desc: "Marcher dans les pas de la Championne"},
+        // {id: 222, name: "Dans les pas de Tarak", cond: user.team == [681, 537, 887, 815, 612, 6], desc: "Marcher dans les pas du Maître Feu"},
     ]
 }
 

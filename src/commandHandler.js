@@ -13,6 +13,9 @@ function commandHandler(bot, interaction) {
     case "catch":
       bot.commands.get("catch").run(bot, interaction);
       break;
+    case "p":
+      bot.commands.get("p").run(bot, interaction);
+      break;
   }
 }
 
