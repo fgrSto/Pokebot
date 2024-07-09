@@ -5,14 +5,14 @@ const { FindRarity } = require("../../controller/controllerPokemon");
 function Inventaire(bot, interaction) {
   let player = FindProfile(bot, interaction.member.id)
   let pokemons = GetData("pokemons");
-  let resultArrays = {god: [], ultBeast: [], myth: [], legend: [], subLeg: [], standard: []}
+  let resultArrays = {god: [], myth: [], legend: [], ultBeast: [], subLeg: [], standard: []}
 
   player.inventory.forEach(pokeId => {
     let pokemon = pokemons.find(pokemon => pokemon.id == pokeId)
     resultArrays[FindRarity(pokemon).stat].push(pokemon)
   });
   
-  let rarity = ["god", "ultBeast", "myth", "legend", "subLeg", "standard"]
+  let rarity = ["god", "myth", "legend", "ultBeast", "subLeg", "standard"]
   for (let i = 0; i < rarity.length; i++) {
     resultArrays[rarity[i]].sort(function (a,b) {
       if(a.name.french < b.name.french) {
@@ -25,7 +25,7 @@ function Inventaire(bot, interaction) {
     })
   }
 
-  let endArray = resultArrays.god.concat(resultArrays.ultBeast, resultArrays.myth, resultArrays.legend, resultArrays.subLeg, resultArrays.standard)
+  let endArray = resultArrays.god.concat(resultArrays.myth, resultArrays.legend, resultArrays.ultBeast, resultArrays.subLeg, resultArrays.standard)
   let page = interaction.customId.split("/")[2]
   let startRange = (30 * page) - 30
   let nbPokemon = getNumOfTimes(player.inventory)
@@ -41,20 +41,20 @@ function Inventaire(bot, interaction) {
         endMsg += `🟠 `
         break;
 
-      case "ultBeast":
-        endMsg += `🟢 `
-        break
-
       case "myth":
         endMsg += `🟣 `
         break
 
       case "legend":
-        endMsg += `🔵 `
+        endMsg += `🟡 `
         break
 
       case "subLeg":
-        endMsg += `🟡 `
+        endMsg += `🔵 `
+        break
+
+      case "ultBeast":
+        endMsg += `🟢 `
         break
 
       case "standard":

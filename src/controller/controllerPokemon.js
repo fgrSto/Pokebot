@@ -46,7 +46,7 @@ function FindRarity(pokemon) {
     return {
       stat: "subLeg",
       rarity: "Sub Légendaire",
-      color: "#ffff42",
+      color: "#003cff",
       price: 15,
       id: pokemon.id
     };
@@ -54,7 +54,7 @@ function FindRarity(pokemon) {
     return {
       stat: "legend",
       rarity: "LÉGENDAIRE !",
-      color: "#003cff",
+      color: "#ffff42",
       price: 25,
       id: pokemon.id
     };
