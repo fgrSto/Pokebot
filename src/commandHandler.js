@@ -1,3 +1,5 @@
+const { Inventaire } = require("./commands/interactions/inventaire");
+
 function commandHandler(bot, interaction) {
   if (
     !interaction.isCommand() &&
@@ -15,6 +17,9 @@ function commandHandler(bot, interaction) {
       break;
     case "p":
       bot.commands.get("p").run(bot, interaction);
+      break;
+    case "inventaire":
+      Inventaire(bot, interaction);
       break;
   }
 }

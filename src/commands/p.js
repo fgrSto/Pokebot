@@ -1,3 +1,4 @@
+const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
 const { FindProfile, SendProfile} = require("../controller/controller");
 const { GetData, WriteData } = require("../controller/controllerData");
 const { SendError } = require("../controller/controllerMessages");
@@ -18,27 +19,30 @@ module.exports = {
   async run(bot, interaction) {
     let listeProfiles = GetData("data");
     let player = null;
+
+    
     if (interaction.options._hoistedOptions[0]) {
-      player = FindProfile(bot, interaction.options._hoistedOptions[0]);
+      player = FindProfile(bot, interaction.options._hoistedOptions[0].user.id);
       if (!player) {
         SendError("**Joueur introuvable**", interaction);
       }
     } else {
-      player = FindProfile(bot, interaction.member);
+      player = FindProfile(bot, interaction.member.user.id);
       if (!player) {
         player = new Profile(interaction.member);
         listeProfiles.push(player);
-
+        
         for (let i = 0; i < listeProfiles.length; i++) {
           if (listeProfiles[i].id == player.id) {
             listeProfiles[i] = player;
           }
         }
-
+        
         WriteData("data", listeProfiles);
       }
     }
-    
+
+
     interaction.deferReply()
 
     setTimeout(() => {

@@ -5,7 +5,7 @@ class Profile {
     this.avatar = user.user.avatar
     this.inventory = [];
     this.team = [];
-    this.bagdes = [];
+    this.badges = [];
     this.money = 0;
     this.lastCatch = null;
     this.trades = [];

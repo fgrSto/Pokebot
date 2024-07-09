@@ -4,6 +4,7 @@ const {
   timeBetween,
   toHHMMSS,
   CheckSucces,
+  CheckPerms,
 } = require("../controller/controller");
 const { GetData, WriteData } = require("../controller/controllerData");
 const { Catch } = require("../controller/controllerPokemon");
@@ -17,8 +18,10 @@ module.exports = {
   description: "Attraper un pokémon",
 
   async run(bot, interaction) {
+    if (CheckPerms(interaction) == false) return
+
     let listeProfiles = GetData("data");
-    let player = FindProfile(bot, interaction.member);
+    let player = FindProfile(bot, interaction.member.user.id);
 
     if (!player) {
       player = new Profile(interaction.member);
