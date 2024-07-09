@@ -34,6 +34,21 @@ function CheckSucces(bot, interaction, player, pokemon) {
   return player;
 }
 
+function getNumOfTimes(arrayOfNums){
+  let found = {}
+      for (let i = 0; i < arrayOfNums.length; i++) {
+          let keys = arrayOfNums[i]
+          found[keys] = ++found[arrayOfNums[i]] || 1
+      }
+
+  return found
+}
+
+function removeDuplicates(arr) {
+  return arr.filter((item,
+      index) => arr.indexOf(item) === index);
+}
+
 function embedProfile(user, interactionUserId) {
 
   let listButtons = new ActionRowBuilder()
@@ -43,7 +58,7 @@ function embedProfile(user, interactionUserId) {
     .setLabel(`🐹 Catch`)
     .setStyle("Secondary"),
     new ButtonBuilder()
-    .setCustomId(`inventaire/${user.id}`)
+    .setCustomId(`inventaire/${user.id}/1`)
     .setLabel(`💼 Inventaire`)
     .setStyle("Secondary"),
     new ButtonBuilder()
@@ -101,7 +116,7 @@ function SendProfile(user, interaction) {
 }
 
 function CheckPerms(interaction) {
-  if (interaction.customId.split("/")[1] == interaction.member.id) {
+  if (interaction.member.id == (interaction.customId == undefined ? interaction.member.id : interaction.customId.split("/")[1])) {
     return true
   } else {
     SendError("Action impossible", interaction)
@@ -116,5 +131,7 @@ module.exports = {
   CheckSucces,
   SendProfile,
   embedProfile,
-  CheckPerms
+  CheckPerms,
+  getNumOfTimes,
+  removeDuplicates
 };

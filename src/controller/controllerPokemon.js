@@ -40,13 +40,15 @@ function FindRarity(pokemon) {
       rarity: "Ultra chimère",
       color: "#00ff64",
       price: 20,
+      id: pokemon.id
     };
   } else if (rarete.SUB_LEGENDARY.includes(pokemon.id)) {
     return {
       stat: "subLeg",
       rarity: "Sub Légendaire",
-      color: "#00c8ff",
+      color: "#ffff42",
       price: 15,
+      id: pokemon.id
     };
   } else if (rarete.LEGENDARY.includes(pokemon.id)) {
     return {
@@ -54,6 +56,7 @@ function FindRarity(pokemon) {
       rarity: "LÉGENDAIRE !",
       color: "#003cff",
       price: 25,
+      id: pokemon.id
     };
   } else if (rarete.MYTHICAL.includes(pokemon.id)) {
     return {
@@ -61,6 +64,7 @@ function FindRarity(pokemon) {
       rarity: "MYTHIQUE !!",
       color: "#e100ff",
       price: 35,
+      id: pokemon.id
     };
   } else if (rarete.SPECIAL.includes(pokemon.id)) {
     return {
@@ -68,6 +72,7 @@ function FindRarity(pokemon) {
       rarity: "DIEU !!!",
       color: "#ffbb00",
       price: 50,
+      id: pokemon.id
     };
   } else {
     return {
@@ -75,8 +80,9 @@ function FindRarity(pokemon) {
       rarity: "Standard",
       color: "#ffffff",
       price: 10,
+      id: pokemon.id
     };
   }
 }
 
-module.exports = { Catch };
+module.exports = { Catch, FindRarity };
