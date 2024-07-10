@@ -3,7 +3,8 @@ const { Succes } = require("../succes");
 const { SendSucces, SendError } = require("./controllerMessages");
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require("discord.js");
 const { DateTime } = require("luxon");
-const value = require("../value")
+const value = require("../value");
+const { Bagdes } = require("../badges");
 
 function FindProfile(bot, id) {
   let listeProfiles = GetData("data");
@@ -74,13 +75,18 @@ function embedProfile(user, interactionUserId) {
     .setLabel(`🏆 Succès`)
     .setStyle("Secondary")
   )
+  
+  let badges = []
+  user.badges.forEach(badgeId => {
+    badges.push(Bagdes(user).find(badge => badge.id == badgeId).icon)
+  });
 
   return {
     embeds: [new EmbedBuilder()
       .setColor("#64c8c8")
       .setTitle(`Profil de ${user.displayName}`)
       .setThumbnail(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`)
-      .setDescription(user.badges == [] ? "\u200b" : `${user.badges.join(" ")} \n \u200b` )
+      .setDescription(user.badges == [] ? "\u200b" : `${badges.join(" ")} \n \u200b` )
       .addFields(
         {name: `Argent 💵`, value: `${user.money} $`, inline: true},
         {name: `Prochain catch <:pokeball:1259699629025398894>`, value: timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })),new Date(user.lastCatch)) <= 21600 ? `🔴 ${toHHMMSS(21600 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })),new Date(user.lastCatch)))}`: `🟢 Disponible`, inline: true},

@@ -1,4 +1,7 @@
-const { Inventaire } = require("./commands/interactions/inventaire");
+const {
+  InventoryTurnPages,
+  SendInventory,
+} = require("./commands/interactions/inventaire");
 
 function commandHandler(bot, interaction) {
   if (
@@ -19,8 +22,10 @@ function commandHandler(bot, interaction) {
       bot.commands.get("p").run(bot, interaction);
       break;
     case "inventaire":
-      Inventaire(bot, interaction);
+      SendInventory(bot, interaction, 1);
       break;
+    case "arrow":
+      InventoryTurnPages(bot, interaction);
   }
 }
 
