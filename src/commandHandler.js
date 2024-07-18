@@ -2,6 +2,10 @@ const {
   InventoryTurnPages,
   SendInventory,
 } = require("./commands/interactions/inventaire");
+const {
+  SuccesTurnPages,
+  SuccesSend,
+} = require("./commands/interactions/succes");
 
 function commandHandler(bot, interaction) {
   if (
@@ -26,6 +30,13 @@ function commandHandler(bot, interaction) {
       break;
     case "arrow":
       InventoryTurnPages(bot, interaction);
+      break;
+    case "succes":
+      SuccesSend(bot, interaction, 1);
+      break;
+    case "arrowSucces":
+      SuccesTurnPages(bot, interaction);
+      break;
   }
 }
 

@@ -18,7 +18,7 @@ module.exports = {
   description: "Attraper un pokémon",
 
   async run(bot, interaction) {
-    if (CheckPerms(interaction) == false) return
+    if (CheckPerms(interaction) == false) return;
 
     let listeProfiles = GetData("data");
     let player = FindProfile(bot, interaction.member.user.id);
@@ -48,13 +48,13 @@ module.exports = {
         .setZone("Europe/Paris")
         .toISO({ includeOffset: false });
 
-      player = CheckSucces(bot, interaction, player, pokemon);
-
-      for (let i = 0; i < listeProfiles.length; i++) {
-        if (listeProfiles[i].id == player.id) {
-          listeProfiles[i] = player;
+        for (let i = 0; i < listeProfiles.length; i++) {
+          if (listeProfiles[i].id == player.id) {
+            listeProfiles[i] = player;
+          }
         }
-      }
+      
+      listeProfiles = CheckSucces(bot,interaction,player,pokemon,listeProfiles);
       WriteData("data", listeProfiles);
 
       interaction.reply({

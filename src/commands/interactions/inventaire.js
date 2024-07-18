@@ -91,7 +91,6 @@ function Inventaire(bot, interaction, page) {
 }
 
 function SendInventory(bot, interaction, page) {
-
   let player = FindProfile(bot, interaction.member.id);
   let totalPage = Math.ceil(removeDuplicates(player.inventory).length / 30);
 
@@ -125,8 +124,9 @@ function SendInventory(bot, interaction, page) {
             text: `0 / 0`,
             iconURL: `https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/770px-Pok%C3%A9_Ball_icon.svg.png`,
           }),
-      ]});
-      return 
+      ],
+    });
+    return;
   }
 
   interaction.reply({
@@ -134,7 +134,11 @@ function SendInventory(bot, interaction, page) {
       new EmbedBuilder()
         .setColor("#64c8c8")
         .setTitle(`Inventaire de ${interaction.member.user.displayName}`)
-        .setDescription(`**${player.inventory.length}** pokémons\n\n${Inventaire(bot, interaction, page).inventory}`)
+        .setDescription(
+          `**${player.inventory.length}** pokémons\n\n${
+            Inventaire(bot, interaction, page).inventory
+          }`
+        )
         .setFooter({
           text: `${page} / ${totalPage}`,
           iconURL: `https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/770px-Pok%C3%A9_Ball_icon.svg.png`,
@@ -171,7 +175,8 @@ function InventoryTurnPages(bot, interaction) {
       page += 1;
       break;
     case "r10":
-      if (page == totalPage) return SendError("Il n'y plus de pages", interaction);
+      if (page == totalPage)
+        return SendError("Il n'y plus de pages", interaction);
       if (page + 10 > totalPage) {
         page = totalPage;
       } else {
@@ -183,13 +188,19 @@ function InventoryTurnPages(bot, interaction) {
 }
 
 function UpdateInventory(bot, interaction, page, totalPage, player) {
-  interaction.message.embeds[0].data.description = `**${player.inventory.length}** pokémons\n\n${Inventaire(bot,interaction,page).inventory}`;
-  interaction.message.embeds[0].data.footer.text = `${Inventaire(bot, interaction, page).page} / ${totalPage}`;
+  interaction.message.embeds[0].data.description = `**${
+    player.inventory.length
+  }** pokémons\n\n${Inventaire(bot, interaction, page).inventory}`;
+  interaction.message.embeds[0].data.footer.text = `${
+    Inventaire(bot, interaction, page).page
+  } / ${totalPage}`;
   interaction.message.components[0].components[0].data.custom_id = `arrow/${interaction.member.user.id}/l10/${page}`;
   interaction.message.components[0].components[1].data.custom_id = `arrow/${interaction.member.user.id}/l1/${page}`;
   interaction.message.components[0].components[2].data.custom_id = `arrow/${interaction.member.user.id}/r1/${page}`;
   interaction.message.components[0].components[3].data.custom_id = `arrow/${interaction.member.user.id}/r10/${page}`;
-  interaction.update({embeds: interaction.message.embeds,components: interaction.message.components,
+  interaction.update({
+    embeds: interaction.message.embeds,
+    components: interaction.message.components,
   });
 }
 
