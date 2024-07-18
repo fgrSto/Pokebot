@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, StringSelectMenuBuilder } = require("discord.js");
 const {
   FindProfile,
   getNumOfTimes,
@@ -12,6 +12,7 @@ const { SendError } = require("../../controller/controllerMessages");
 function Inventaire(bot, interaction, page) {
   let player = FindProfile(bot, interaction.member.id);
   let pokemons = GetData("pokemons");
+  let listPoke = []
   let resultArrays = {
     god: [],
     myth: [],
@@ -47,14 +48,14 @@ function Inventaire(bot, interaction, page) {
     resultArrays.standard
   );
 
-  let startRange = 30 * page - 30;
+  let startRange = 25 * page - 25;
   let nbPokemon = getNumOfTimes(player.inventory);
   let endMsg = "";
 
   endArray = removeDuplicates(endArray);
 
   for (let p = startRange; p < endArray.length; p++) {
-    if (p >= startRange + 30) break;
+    if (p >= startRange + 25) break;
     switch (FindRarity(endArray[p]).stat) {
       case "god":
         endMsg += `🟠 `;
@@ -80,19 +81,19 @@ function Inventaire(bot, interaction, page) {
         endMsg += `⚪ `;
         break;
     }
-    endMsg += `[${endArray[p].name.french}](<https://www.pokepedia.fr/${
-      endArray[p].name.french
-    }>) (x ${nbPokemon[endArray[p].id]})\n`;
+    endMsg += `[${endArray[p].name.french}](<https://www.pokepedia.fr/${endArray[p].name.french}>) (x ${nbPokemon[endArray[p].id]})\n`;
+    listPoke.push({label: endArray[p].name.french, value: endArray[p].id.toString()})
   }
   return {
     inventory: endMsg,
     page: page,
+    pokemon: listPoke
   };
 }
 
 function SendInventory(bot, interaction, page) {
   let player = FindProfile(bot, interaction.member.id);
-  let totalPage = Math.ceil(removeDuplicates(player.inventory).length / 30);
+  let totalPage = Math.ceil(removeDuplicates(player.inventory).length / 25);
 
   let listButtons = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
@@ -117,6 +118,13 @@ function SendInventory(bot, interaction, page) {
       .setStyle("Secondary")
   );
 
+  let sellButtons = new ActionRowBuilder().addComponents(
+    new StringSelectMenuBuilder()
+    .setCustomId(`sell/${interaction.member.user.id}`)
+    .setPlaceholder(`🏷️ Vendre un Pokémon`)
+    .setOptions(Inventaire(bot, interaction, page).pokemon)
+  )
+
   if (player.inventory.length == 0) {
     interaction.reply({
       embeds: [
@@ -128,7 +136,11 @@ function SendInventory(bot, interaction, page) {
             text: `0 / 0`,
             iconURL: `https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/770px-Pok%C3%A9_Ball_icon.svg.png`,
           }),
-      ],
+      ], fetchReply: true
+    }).then(sent => {
+      setTimeout(() => {
+          sent.delete()
+      }, 3000);
     });
     return;
   }
@@ -148,7 +160,7 @@ function SendInventory(bot, interaction, page) {
           iconURL: `https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/770px-Pok%C3%A9_Ball_icon.svg.png`,
         }),
     ],
-    components: [listButtons],
+    components: [sellButtons, listButtons],
   });
 }
 
@@ -158,7 +170,7 @@ function InventoryTurnPages(bot, interaction) {
   let page = parseInt(interaction.customId.split("/")[3]);
 
   let player = FindProfile(bot, interaction.member.id);
-  let totalPage = Math.ceil(removeDuplicates(player.inventory).length / 30);
+  let totalPage = Math.ceil(removeDuplicates(player.inventory).length / 25);
 
   switch (arrow) {
     case "l10":
@@ -192,20 +204,14 @@ function InventoryTurnPages(bot, interaction) {
 }
 
 function UpdateInventory(bot, interaction, page, totalPage, player) {
-  interaction.message.embeds[0].data.description = `**${
-    player.inventory.length
-  }** pokémons\n\n${Inventaire(bot, interaction, page).inventory}`;
-  interaction.message.embeds[0].data.footer.text = `${
-    Inventaire(bot, interaction, page).page
-  } / ${totalPage}`;
-  interaction.message.components[0].components[0].data.custom_id = `arrow/${interaction.member.user.id}/l10/${page}`;
-  interaction.message.components[0].components[1].data.custom_id = `arrow/${interaction.member.user.id}/l1/${page}`;
-  interaction.message.components[0].components[2].data.custom_id = `close/${interaction.member.user.id}`
-  interaction.message.components[0].components[3].data.custom_id = `arrow/${interaction.member.user.id}/r1/${page}`;
-  interaction.message.components[0].components[4].data.custom_id = `arrow/${interaction.member.user.id}/r10/${page}`;
-  interaction.update({
-    embeds: interaction.message.embeds,
-    components: interaction.message.components,
+  interaction.message.embeds[0].data.description = `**${player.inventory.length}** pokémons\n\n${Inventaire(bot, interaction, page).inventory}`;interaction.message.embeds[0].data.footer.text = `${Inventaire(bot, interaction, page).page} / ${totalPage}`;
+  interaction.message.components[0].components[0].data.options = Inventaire(bot, interaction, page).pokemon
+  interaction.message.components[1].components[0].data.custom_id = `arrow/${interaction.member.user.id}/l10/${page}`;
+  interaction.message.components[1].components[1].data.custom_id = `arrow/${interaction.member.user.id}/l1/${page}`;
+  interaction.message.components[1].components[2].data.custom_id = `close/${interaction.member.user.id}`
+  interaction.message.components[1].components[3].data.custom_id = `arrow/${interaction.member.user.id}/r1/${page}`;
+  interaction.message.components[1].components[4].data.custom_id = `arrow/${interaction.member.user.id}/r10/${page}`;
+  interaction.update({embeds: interaction.message.embeds,components: interaction.message.components,
   });
 }
 

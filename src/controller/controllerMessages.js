@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require("discord.js");
-const { CheckPerms } = require("./controller");
 
 function SendError(message, interaction) {
   interaction.reply({
@@ -9,6 +8,12 @@ function SendError(message, interaction) {
         sent.delete()
     }, 3000);
   });
+}
+
+function SendNotError(message, interaction) {
+  interaction.reply({
+    embeds: [new EmbedBuilder().setDescription(message).setColor("Green")], fetchReply: true
+  })
 }
 
 function SendSucces(succ, interaction) {
@@ -27,4 +32,4 @@ function close(bot, interaction) {
   interaction.message.delete()
 }
 
-module.exports = { SendError, SendSucces, close };
+module.exports = { SendError, SendSucces, close, SendNotError };

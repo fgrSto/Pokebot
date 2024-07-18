@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require("discord.js");
 const {
   FindProfile,
   timeBetween,
@@ -33,7 +33,7 @@ module.exports = {
           DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })
         ),
         new Date(player.lastCatch)
-      ) >= 1 //21600s = 6h
+      ) >= 21600 //21600s = 6h
     ) {
       let pokemon = Catch();
       player.inventory.push(pokemon.id);
@@ -57,6 +57,13 @@ module.exports = {
       listeProfiles = CheckSucces(bot,interaction,player,pokemon,listeProfiles);
       WriteData("data", listeProfiles);
 
+      let listButtons = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId(`sell/${interaction.member.user.id}/${pokemon.id}`)
+          .setLabel(`🏷️ Vendre ce Pokémon`)
+          .setStyle("Secondary"),
+        )
+
       interaction.reply({
         embeds: [
           new EmbedBuilder()
@@ -75,7 +82,7 @@ module.exports = {
               iconURL: `https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/770px-Pok%C3%A9_Ball_icon.svg.png`,
             })
             .setTimestamp(),
-        ],
+        ], components: [listButtons]
       });
     } else {
       SendError(

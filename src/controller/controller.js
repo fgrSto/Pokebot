@@ -147,27 +147,27 @@ function embedProfile(user, interactionUserId) {
                         new Date(
                           DateTime.now()
                             .setZone("Europe/Paris")
-                            .toISO({ includeOffset: false })
+                            .toISO({ includeOffset: false }) 
                         ),
                         new Date(user.lastCatch)
                       )
                   )}`
                 : `🟢 Disponible`,
-            inline: true,
+            inline: false, // FAUT METTRE TRUE
           },
           {
             name: `Succès 🏆`,
             value: `${user.succes.length} / ${Succes(user).length}`,
-            inline: true,
+            inline: false, // FAUT METTRE TRUE
           },
-          { name: "\u200b", value: `**Équipe :**` }
+          //{ name: "\u200b", value: `**Équipe :**` }
         )
-        .setImage("attachment://team.png"),
+        //.setImage("attachment://team.png"),
     ],
     components: [
       user.id == interactionUserId ? listButtons : listPrivateButton,
     ],
-    files: ["team.png"],
+    //files: ["team.png"],
   };
 }
 

@@ -70,7 +70,7 @@ function SuccesSend(bot, interaction, page) {
         new EmbedBuilder()
           .setColor("#ffff00")
           .setTitle(`Badges de ${interaction.member.user.displayName}`)
-          .setDescription(`Les badges sont des accomplissements affichés sur le profile \nIls sont uniques ou particulièrements difficiles à obtenir \n \n${badgesMsg}`)
+          .setDescription(`*Les badges sont des accomplissements affichés sur le profile* \n*Ils sont uniques ou particulièrements difficiles à obtenir* \n \n${badgesMsg}`)
           .setFooter({
             text: `${page} / ${totalPage}`,
             iconURL: `https://www.pngall.com/wp-content/uploads/5/Gold-Trophy-PNG.png`,
