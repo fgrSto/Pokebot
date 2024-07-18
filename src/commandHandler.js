@@ -7,10 +7,12 @@ const {
   SuccesTurnPages,
   SuccesSend,
 } = require("./commands/interactions/succes");
+const { Team } = require("./commands/team");
 const { CheckPerms } = require("./controller/controller");
 const { close } = require("./controller/controllerMessages");
 
 function commandHandler(bot, interaction) {
+  console.log(interaction);
   if (
     !interaction.isCommand() &&
     !interaction.isButton() &&
@@ -47,6 +49,9 @@ function commandHandler(bot, interaction) {
     case "sell":
       SellPokemon(bot, interaction);
     break
+    case "team":
+      bot.commands.get("team").run(bot, interaction)
+      break
   }
 }
 

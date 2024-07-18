@@ -9,7 +9,7 @@ const { embedProfile, FindProfile } = require("./src/controller/controller.js");
 require("dotenv").config();
 bot.commands = new Discord.Collection();
 
-loadCommands(bot);
+// loadCommands(bot);
 
 setInterval(() => {//update profiles
   if (value.lastProfil != null) {
@@ -20,7 +20,7 @@ setInterval(() => {//update profiles
 bot.on("ready", async () => {
   console.log("bot online");
   console.log(new Date().toLocaleString());
-  await loadSlashCommands(bot);
+  // await loadSlashCommands(bot);
 });
 
 bot.on("interactionCreate", (interaction) => {
