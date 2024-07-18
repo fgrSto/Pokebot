@@ -104,6 +104,10 @@ function SendInventory(bot, interaction, page) {
       .setLabel(`1 ◀️`)
       .setStyle("Secondary"),
     new ButtonBuilder()
+      .setCustomId(`close/${interaction.member.user.id}`)
+      .setLabel("❌")
+      .setStyle("Secondary"),
+    new ButtonBuilder()
       .setCustomId(`arrow/${interaction.member.user.id}/r1/${page}`)
       .setLabel(`▶️ 1`)
       .setStyle("Secondary"),
@@ -196,13 +200,15 @@ function UpdateInventory(bot, interaction, page, totalPage, player) {
   } / ${totalPage}`;
   interaction.message.components[0].components[0].data.custom_id = `arrow/${interaction.member.user.id}/l10/${page}`;
   interaction.message.components[0].components[1].data.custom_id = `arrow/${interaction.member.user.id}/l1/${page}`;
-  interaction.message.components[0].components[2].data.custom_id = `arrow/${interaction.member.user.id}/r1/${page}`;
-  interaction.message.components[0].components[3].data.custom_id = `arrow/${interaction.member.user.id}/r10/${page}`;
+  interaction.message.components[0].components[2].data.custom_id = `close/${interaction.member.user.id}`
+  interaction.message.components[0].components[3].data.custom_id = `arrow/${interaction.member.user.id}/r1/${page}`;
+  interaction.message.components[0].components[4].data.custom_id = `arrow/${interaction.member.user.id}/r10/${page}`;
   interaction.update({
     embeds: interaction.message.embeds,
     components: interaction.message.components,
   });
 }
+
 
 module.exports = {
   Inventaire,

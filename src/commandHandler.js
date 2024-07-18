@@ -6,6 +6,8 @@ const {
   SuccesTurnPages,
   SuccesSend,
 } = require("./commands/interactions/succes");
+const { CheckPerms } = require("./controller/controller");
+const { close } = require("./controller/controllerMessages");
 
 function commandHandler(bot, interaction) {
   if (
@@ -37,6 +39,10 @@ function commandHandler(bot, interaction) {
     case "arrowSucces":
       SuccesTurnPages(bot, interaction);
       break;
+    case "close":
+      CheckPerms(interaction)
+      close(bot, interaction);
+      break
   }
 }
 

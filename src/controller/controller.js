@@ -193,10 +193,7 @@ function SendProfile(user, interaction) {
 function CheckPerms(interaction) {
   if (
     interaction.member.id ==
-    (interaction.customId == undefined
-      ? interaction.member.id
-      : interaction.customId.split("/")[1])
-  ) {
+    (interaction.customId == undefined ? interaction.member.id : interaction.customId.split("/")[1])) {
     return true;
   } else {
     SendError("Action impossible", interaction);
