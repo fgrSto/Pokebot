@@ -12,7 +12,6 @@ const { CheckPerms } = require("./controller/controller");
 const { close } = require("./controller/controllerMessages");
 
 function commandHandler(bot, interaction) {
-  console.log(interaction);
   if (
     !interaction.isCommand() &&
     !interaction.isButton() &&

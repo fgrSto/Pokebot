@@ -1,21 +1,16 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require("discord.js");
-const {
-  FindProfile,
-  timeBetween,
-  toHHMMSS,
-  CheckSucces,
-  CheckPerms,
-} = require("../controller/controller");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } = require("discord.js");
+const {FindProfile,timeBetween,toHHMMSS,CheckSucces,CheckPerms,} = require("../controller/controller");
 const { GetData, WriteData } = require("../controller/controllerData");
-const { Catch } = require("../controller/controllerPokemon");
+const { CatchPoke } = require("../controller/controllerPokemon");
 const Profile = require("../profile");
 const { DateTime } = require("luxon");
 const combineImage = require("combine-image");
 const { SendError } = require("../controller/controllerMessages");
 
 module.exports = {
-  name: "catch",
-  description: "Attraper un pokémon",
+  data: catchs = new SlashCommandBuilder()
+  .setName("catch")
+  .setDescription("Attraper un pokémon"),
 
   async run(bot, interaction) {
     if (CheckPerms(interaction) == false) return;
@@ -33,9 +28,9 @@ module.exports = {
           DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })
         ),
         new Date(player.lastCatch)
-      ) >= 21600 //21600s = 6h
+      ) >= 1 //21600s = 6h
     ) {
-      let pokemon = Catch();
+      let pokemon = CatchPoke();
       player.inventory.push(pokemon.id);
       player.stats.totalCatch[pokemon.rarete.stat]++;
       player.stats.totalCatch.total++;

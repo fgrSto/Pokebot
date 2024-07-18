@@ -1,6 +1,6 @@
 const { GetData } = require("./controllerData");
 
-function Catch() {
+function CatchPoke() {
   let pokemons = GetData("pokemons");
   let randomNumber = Math.floor(Math.random() * pokemons.length);
   return {
@@ -85,4 +85,4 @@ function FindRarity(pokemon) {
   }
 }
 
-module.exports = { Catch, FindRarity };
+module.exports = { CatchPoke, FindRarity };

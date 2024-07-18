@@ -1,15 +1,15 @@
-const Discord = require("discord.js");
-const bot = new Discord.Client({ intents: 3276799 });
-const loadCommands = require("./src/loaders/loadCommands.js");
-const loadSlashCommands = require("./src/loaders/loadSlashCommands");
+require("dotenv").config();
+const { Collection, GatewayIntentBits, Client } = require("discord.js");
+const bot = new Client({ intents: GatewayIntentBits.Guilds });
+const fs = require('fs');
 const { commandHandler } = require("./src/commandHandler.js");
 const { GetData, WriteData } = require("./src/controller/controllerData.js");
 const value = require("./src/value.js");
 const { embedProfile, FindProfile } = require("./src/controller/controller.js");
-require("dotenv").config();
-bot.commands = new Discord.Collection();
+const path = require("path");
 
-// loadCommands(bot);
+bot.commands = new Collection()
+bot.commandArray = []
 
 setInterval(() => {//update profiles
   if (value.lastProfil != null) {
@@ -18,9 +18,17 @@ setInterval(() => {//update profiles
 }, 30000);
 
 bot.on("ready", async () => {
+  const foldersPath = path.join(__dirname, '/src/commands');
+  const commandFiles = fs.readdirSync(foldersPath).filter(file => file.endsWith('.js'))
+  for (const file of commandFiles) {
+    const filePath = path.join(foldersPath, file);
+    const command = require(filePath);
+    bot.commands.set(command.data.name, command);
+    await bot.application.commands.create(command.data)
+  }
+
   console.log("bot online");
   console.log(new Date().toLocaleString());
-  // await loadSlashCommands(bot);
 });
 
 bot.on("interactionCreate", (interaction) => {

@@ -1,4 +1,6 @@
 const { SlashCommandBuilder, Client } = require("discord.js");
+const { GetData } = require("../controller/controllerData");
+const { FindProfile } = require("../controller/controller");
 
 module.exports = {
 
@@ -21,40 +23,21 @@ module.exports = {
         .setRequired(false)),
         
     async run(bot, interaction) {
-        
+      let player = FindProfile(bot, interaction.member.user.id);
+      let pokemons = GetData("pokemons")
+      let focusedOption = interaction.options.getFocused(true)
+      let choices = []
+
+      if(focusedOption.name == "add") {
+        pokemons.forEach(poke => {
+          if(player.inventory.includes(poke.id)) {
+            choices.push({name: poke.name.french, value: poke.id})
+          }
+        });
+      }
+
+      let filteredChoices = choices.filter(choice => choice.name.toLowerCase().startsWith(focusedOption.value.toLowerCase())).slice(0, 25)
+      await interaction.respond(filteredChoices.map(choice => ({ name: choice.name, value: choice.value.toString()})))
     }
     
 }
-    
-
-
-
-
-// module.exports = {
-//     name: "team",
-//     description: "Afficher ou modifier l'équipe",
-//     options: [
-//         {
-//             name: "add",
-//             description: "Ajouter un pokémon à l'équipe",
-//             required: false,
-//             type: "String",
-//             autocomplete: true
-//         },
-//         {
-//             name: "remove",
-//             description: "Retirer un pokémon de l'équipe",
-//             required: false,
-//             type: "String",
-//             autocomplete: true
-//         },
-//         {
-//             name: "see",
-//             description: "Voir l'équipe d'un joueur",
-//             required: false,
-//             type: "User",
-//         },
-//     ],
-
-
-// }

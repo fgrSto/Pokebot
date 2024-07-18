@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } = require("discord.js");
 const { FindProfile, SendProfile} = require("../controller/controller");
 const { GetData, WriteData } = require("../controller/controllerData");
 const { SendError } = require("../controller/controllerMessages");
@@ -6,16 +6,15 @@ const Profile = require("../profile");
 const combineImage = require("combine-image");
 
 module.exports = {
-  name: "p",
-  description: "Voir le profil d'un joueur",
-  options: [
-    {
-      name: "user",
-      description: "Voir le profil d'un autre joueur",
-      required: false,
-      type: "User",
-    },
-  ],
+  data: p = new SlashCommandBuilder()
+  .setName("p")
+  .setDescription("Voir le profil d'un joueur")
+  .addUserOption(option => 
+    option.setName("user")
+    .setDescription("Voir le profil d'un autre joueur")
+    .setRequired(false)
+  ),
+  
   async run(bot, interaction) {
     let listeProfiles = GetData("data");
     let player = null;
