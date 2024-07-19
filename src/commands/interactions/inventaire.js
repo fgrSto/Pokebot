@@ -92,6 +92,7 @@ function Inventaire(bot, interaction, page) {
 }
 
 function SendInventory(bot, interaction, page) {
+  if (!CheckPerms(interaction)) return 
   let player = FindProfile(bot, interaction.member.id);
   let totalPage = Math.ceil(removeDuplicates(player.inventory).length / 25);
 

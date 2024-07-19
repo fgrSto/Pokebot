@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 const { FindProfile, SendProfile} = require("../controller/controller");
 const { GetData, WriteData } = require("../controller/controllerData");
 const { SendError } = require("../controller/controllerMessages");

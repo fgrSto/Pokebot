@@ -13,7 +13,11 @@ function SendError(message, interaction) {
 function SendNotError(message, interaction) {
   interaction.reply({
     embeds: [new EmbedBuilder().setDescription(message).setColor("Green")], fetchReply: true
-  })
+  }).then(sent => {
+    setTimeout(() => {
+        sent.delete()
+    }, 3000);
+  });
 }
 
 function SendSucces(succ, interaction) {

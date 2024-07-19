@@ -26,6 +26,8 @@ function toHHMMSS(secs) {
 }
 
 function CheckSucces(bot, interaction, player, pokemon, listeProfiles) {
+  let prevTeam = [...player.team]
+  player.team.sort(function(a, b) {return a - b}).toString()
   Succes(player, pokemon).forEach((succ) => {
     if (succ.cond && !player.succes.includes(succ.id)) {
       SendSucces(succ, interaction);
@@ -38,6 +40,7 @@ function CheckSucces(bot, interaction, player, pokemon, listeProfiles) {
       }
     }
   });
+  player.team = prevTeam
 
   Bagdes(player).forEach((badge) => {
     let bestPlayer = null
@@ -71,7 +74,6 @@ function CheckSucces(bot, interaction, player, pokemon, listeProfiles) {
       }
     }
   })
-  
   return listeProfiles;
 }
 
@@ -153,21 +155,21 @@ function embedProfile(user, interactionUserId) {
                       )
                   )}`
                 : `🟢 Disponible`,
-            inline: false, // FAUT METTRE TRUE
+            inline: true,
           },
           {
             name: `Succès 🏆`,
             value: `${user.succes.length} / ${Succes(user).length}`,
-            inline: false, // FAUT METTRE TRUE
+            inline: true,
           },
-          //{ name: "\u200b", value: `**Équipe :**` }
+          { name: "\u200b", value: `**Équipe :**` }
         )
-        //.setImage("attachment://team.png"),
+        .setImage("attachment://team.png"),
     ],
     components: [
       user.id == interactionUserId ? listButtons : listPrivateButton,
     ],
-    //files: ["team.png"],
+    files: ["team.png"],
   };
 }
 

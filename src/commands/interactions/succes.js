@@ -36,6 +36,7 @@ function ShowSucces(bot, interaction, page) {
 }
 
 function SuccesSend(bot, interaction, page) {
+  if (!CheckPerms(interaction)) return
   let player = FindProfile(bot, interaction.member.id);
   let totalPage = Math.ceil(Succes(player, 0).length / 10) + 1;
 
