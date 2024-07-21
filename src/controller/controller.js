@@ -124,44 +124,12 @@ function embedProfile(user, interactionUserId) {
       new EmbedBuilder()
         .setColor("#64c8c8")
         .setTitle(`Profil de ${user.displayName}`)
-        .setThumbnail(
-          `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
-        )
-        .setDescription(
-          user.badges == [] ? "\u200b" : `${badges.join(" ")} \n \u200b`
-        )
+        .setThumbnail(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`)
+        .setDescription(user.badges == [] ? "\u200b" : `${badges.join(" ")} \n \u200b`)
         .addFields(
           { name: `Argent 💵`, value: `${user.money} $`, inline: true },
-          {
-            name: `Prochain catch <:pokeball:1259699629025398894>`,
-            value:
-              timeBetween(
-                new Date(
-                  DateTime.now()
-                    .setZone("Europe/Paris")
-                    .toISO({ includeOffset: false })
-                ),
-                new Date(user.lastCatch)
-              ) <= 21600
-                ? `🔴 ${toHHMMSS(
-                    21600 -
-                      timeBetween(
-                        new Date(
-                          DateTime.now()
-                            .setZone("Europe/Paris")
-                            .toISO({ includeOffset: false }) 
-                        ),
-                        new Date(user.lastCatch)
-                      )
-                  )}`
-                : `🟢 Disponible`,
-            inline: true,
-          },
-          {
-            name: `Succès 🏆`,
-            value: `${user.succes.length} / ${Succes(user).length}`,
-            inline: true,
-          },
+          { name: `Prochain catch <:pokeball:1259699629025398894>`, value:timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(user.lastCatch)) <= 21600 ? `🔴 ${toHHMMSS(21600 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(user.lastCatch)))}` : `🟢 Disponible`,inline: true },
+          { name: `Succès 🏆`, value: `${user.succes.length} / ${Succes(user).length}`, inline: true },
           { name: "\u200b", value: `**Équipe :**` }
         )
         .setImage("attachment://team.png"),
@@ -193,9 +161,7 @@ function SendProfile(user, interaction) {
 }
 
 function CheckPerms(interaction) {
-  if (
-    interaction.member.id ==
-    (interaction.customId == undefined ? interaction.member.id : interaction.customId.split("/")[1])) {
+  if (interaction.member.id == (interaction.customId == undefined ? interaction.member.id : interaction.customId.split("/")[1])) {
     return true;
   } else {
     SendError("Action impossible", interaction);

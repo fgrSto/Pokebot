@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, Client } = require("discord.js");
 const { GetData, WriteData } = require("../controller/controllerData");
-const { FindProfile, SendProfile } = require("../controller/controller");
+const { FindProfile, SendProfile, CheckPerms, CheckSucces } = require("../controller/controller");
 const { SendError, SendNotError } = require("../controller/controllerMessages");
 const combineImage = require("combine-image");
 
@@ -29,10 +29,11 @@ module.exports = {
       let player = FindProfile(bot, interaction.member.user.id);
       let listeProfiles = GetData("data");
       let pokemons = GetData("pokemons")
-      let paramsAdd = interaction.options._hoistedOptions.find(option => option.name == "add")
-      let paramsRemove = interaction.options._hoistedOptions.find(option => option.name == "remove")
+      let paramsAdd = interaction.options ? interaction.options._hoistedOptions.find(option => option.name == "add") : {name: "add", value: interaction.values[0]}
+      let paramsRemove = interaction.options ? interaction.options._hoistedOptions.find(option => option.name == "remove") : undefined
 
-      if (interaction.options._hoistedOptions.length > 1) return SendError("Frero fais un effort stp", interaction)
+      if (!CheckPerms(interaction)) return
+      if (interaction.options ? interaction.options._hoistedOptions.length > 1 : false) return SendError("Frero fais un effort stp", interaction)
 
       if (interaction.isAutocomplete()) {
         let focusedOption = interaction.options.getFocused(true)
@@ -56,7 +57,9 @@ module.exports = {
           let filteredChoices = choices.filter(choice => choice.name.toLowerCase().startsWith(focusedOption.value.toLowerCase())).slice(0, 25)
           await interaction.respond(filteredChoices.map(choice => ({ name: choice.name, value: choice.value.toString()})))
         }
-      } else {
+      } 
+
+      else {
         if (paramsAdd ? paramsAdd.name == "add" : false) {
           if (!pokemons.find(pokemon => pokemon.id == paramsAdd.value)) return SendError("Pokémon introuvable", interaction)
           if (player.team.length >= 6) {
@@ -68,6 +71,8 @@ module.exports = {
               player.inventory.splice(index, 1)
               player.team.push(parseInt(paramsAdd.value))
               SendNotError(`**${pokemons.find(pokemon => pokemon.id == paramsAdd.value).name.french}** a été ajouté à l'équipe`, interaction)
+            } else {
+              return SendError(`Ce pokémon est déjà dans l'équipe`, interaction)
             }
           }
         }
@@ -111,6 +116,7 @@ module.exports = {
             listeProfiles[i] = player;
           }
         }
+        listeProfiles = CheckSucces(bot, interaction, player, {id: 0}, listeProfiles)
         WriteData("data", listeProfiles);
        }
     }

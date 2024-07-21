@@ -126,6 +126,13 @@ function SendInventory(bot, interaction, page) {
     .setOptions(Inventaire(bot, interaction, page).pokemon)
   )
 
+  let teamButtons = new ActionRowBuilder().addComponents(
+    new StringSelectMenuBuilder()
+    .setCustomId(`team/${interaction.member.user.id}`)
+    .setPlaceholder(`📥 Ajouter à l'équipe`)
+    .setOptions(Inventaire(bot, interaction, page).pokemon)
+  )
+
   if (player.inventory.length == 0) {
     interaction.reply({
       embeds: [
@@ -161,7 +168,12 @@ function SendInventory(bot, interaction, page) {
           iconURL: `https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/770px-Pok%C3%A9_Ball_icon.svg.png`,
         }),
     ],
-    components: [sellButtons, listButtons],
+    components: [sellButtons, teamButtons, listButtons],
+    fetchReply: true
+  }).then(sent => {
+    setTimeout(() => {
+        sent.delete()
+    }, 300000);
   });
 }
 
@@ -207,11 +219,12 @@ function InventoryTurnPages(bot, interaction) {
 function UpdateInventory(bot, interaction, page, totalPage, player) {
   interaction.message.embeds[0].data.description = `**${player.inventory.length}** pokémons\n\n${Inventaire(bot, interaction, page).inventory}`;interaction.message.embeds[0].data.footer.text = `${Inventaire(bot, interaction, page).page} / ${totalPage}`;
   interaction.message.components[0].components[0].data.options = Inventaire(bot, interaction, page).pokemon
-  interaction.message.components[1].components[0].data.custom_id = `arrow/${interaction.member.user.id}/l10/${page}`;
-  interaction.message.components[1].components[1].data.custom_id = `arrow/${interaction.member.user.id}/l1/${page}`;
-  interaction.message.components[1].components[2].data.custom_id = `close/${interaction.member.user.id}`
-  interaction.message.components[1].components[3].data.custom_id = `arrow/${interaction.member.user.id}/r1/${page}`;
-  interaction.message.components[1].components[4].data.custom_id = `arrow/${interaction.member.user.id}/r10/${page}`;
+  interaction.message.components[1].components[0].data.options = Inventaire(bot, interaction, page).pokemon
+  interaction.message.components[2].components[0].data.custom_id = `arrow/${interaction.member.user.id}/l10/${page}`;
+  interaction.message.components[2].components[1].data.custom_id = `arrow/${interaction.member.user.id}/l1/${page}`;
+  interaction.message.components[2].components[2].data.custom_id = `close/${interaction.member.user.id}`
+  interaction.message.components[2].components[3].data.custom_id = `arrow/${interaction.member.user.id}/r1/${page}`;
+  interaction.message.components[2].components[4].data.custom_id = `arrow/${interaction.member.user.id}/r10/${page}`;
   interaction.update({embeds: interaction.message.embeds,components: interaction.message.components,
   });
 }

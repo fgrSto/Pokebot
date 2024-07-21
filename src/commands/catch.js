@@ -79,21 +79,6 @@ module.exports = {
             .setTimestamp(),
         ], components: [listButtons]
       });
-    } else {
-      SendError(
-        `Action disponible dans : **${toHHMMSS(
-          21600 -
-            timeBetween(
-              new Date(
-                DateTime.now()
-                  .setZone("Europe/Paris")
-                  .toISO({ includeOffset: false })
-              ),
-              new Date(player.lastCatch)
-            )
-        )}**`,
-        interaction
-      );
-    }
+    } else {SendError(`Action disponible dans : **${toHHMMSS(21600 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })),new Date(player.lastCatch)))}**`,interaction)}
   },
 };
