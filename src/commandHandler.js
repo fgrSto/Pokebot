@@ -1,12 +1,6 @@
-const {
-  InventoryTurnPages,
-  SendInventory,
-} = require("./commands/interactions/inventaire");
+const { InventoryTurnPages, SendInventory } = require("./commands/interactions/inventaire");
 const { SellPokemon } = require("./commands/interactions/sell");
-const {
-  SuccesTurnPages,
-  SuccesSend,
-} = require("./commands/interactions/succes");
+const { SuccesTurnPages, SuccesSend } = require("./commands/interactions/succes");
 const { Team } = require("./commands/team");
 const { CheckPerms } = require("./controller/controller");
 const { close } = require("./controller/controllerMessages");

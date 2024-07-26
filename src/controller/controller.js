@@ -128,7 +128,7 @@ function embedProfile(user, interactionUserId) {
         .setDescription(user.badges == [] ? "\u200b" : `${badges.join(" ")} \n \u200b`)
         .addFields(
           { name: `Argent 💵`, value: `${user.money} $`, inline: true },
-          { name: `Prochain catch <:pokeball:1259699629025398894>`, value:timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(user.lastCatch)) <= 21600 ? `🔴 ${toHHMMSS(21600 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(user.lastCatch)))}` : `🟢 Disponible`,inline: true },
+          { name: `Prochain catch <:Pokeball:1265664986034995255>`, value:timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(user.lastCatch)) <= 21600 ? `🔴 ${toHHMMSS(21600 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(user.lastCatch)))}` : `🟢 Disponible`,inline: true },
           { name: `Succès 🏆`, value: `${user.succes.length} / ${Succes(user).length}`, inline: true },
           { name: "\u200b", value: `**Équipe :**` }
         )
