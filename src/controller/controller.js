@@ -104,6 +104,10 @@ function embedProfile(user, interactionUserId) {
     new ButtonBuilder()
       .setCustomId(`succes/${user.id}`)
       .setLabel(`🏆 Succès`)
+      .setStyle("Secondary"),
+    new ButtonBuilder()
+      .setCustomId(`stats/${user.id}`)
+      .setLabel(`📊 Statistiques`)
       .setStyle("Secondary")
   );
 
@@ -111,6 +115,10 @@ function embedProfile(user, interactionUserId) {
     new ButtonBuilder()
       .setCustomId(`succes/${user.id}`)
       .setLabel(`🏆 Succès`)
+      .setStyle("Secondary"),
+    new ButtonBuilder()
+      .setCustomId(`stats/${user.id}`)
+      .setLabel(`📊 Statistiques`)
       .setStyle("Secondary")
   );
 

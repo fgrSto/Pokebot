@@ -1,5 +1,6 @@
 const { InventoryTurnPages, SendInventory } = require("./commands/interactions/inventaire");
 const { SellPokemon } = require("./commands/interactions/sell");
+const { ShowStats } = require("./commands/interactions/stats");
 const { SuccesTurnPages, SuccesSend } = require("./commands/interactions/succes");
 const { Team } = require("./commands/team");
 const { CheckPerms } = require("./controller/controller");
@@ -34,6 +35,9 @@ function commandHandler(bot, interaction) {
       break;
     case "arrowSucces":
       SuccesTurnPages(bot, interaction);
+      break;
+    case "stats":
+      ShowStats(bot, interaction);
       break;
     case "close":
       if (!CheckPerms(interaction)) return
