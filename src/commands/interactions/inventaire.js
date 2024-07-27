@@ -15,10 +15,9 @@ function Inventaire(bot, interaction, page) {
   let listPoke = []
   let resultArrays = {
     god: [],
-    myth: [],
+    fab: [],
     legend: [],
     ultBeast: [],
-    subLeg: [],
     standard: [],
   };
 
@@ -27,7 +26,7 @@ function Inventaire(bot, interaction, page) {
     resultArrays[FindRarity(pokemon).stat].push(pokemon);
   });
 
-  let rarity = ["god", "myth", "legend", "ultBeast", "subLeg", "standard"];
+  let rarity = ["god", "fab", "legend", "ultBeast", "standard"];
   for (let i = 0; i < rarity.length; i++) {
     resultArrays[rarity[i]].sort(function (a, b) {
       if (a.name.french < b.name.french) {
@@ -41,10 +40,9 @@ function Inventaire(bot, interaction, page) {
   }
 
   let endArray = resultArrays.god.concat(
-    resultArrays.myth,
+    resultArrays.fab,
     resultArrays.legend,
     resultArrays.ultBeast,
-    resultArrays.subLeg,
     resultArrays.standard
   );
 
@@ -61,16 +59,12 @@ function Inventaire(bot, interaction, page) {
         endMsg += `🟠 `;
         break;
 
-      case "myth":
+      case "fab":
         endMsg += `🟣 `;
         break;
 
       case "legend":
         endMsg += `🟡 `;
-        break;
-
-      case "subLeg":
-        endMsg += `🔵 `;
         break;
 
       case "ultBeast":

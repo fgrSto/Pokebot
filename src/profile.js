@@ -14,10 +14,9 @@ class Profile {
       totalCatch: {
         total: 0,
         standard: 0,
-        subLeg: 0,
         ultBeast: 0,
         legend: 0,
-        myth: 0,
+        fab: 0,
         god: 0,
       },
       totalMoney: 0,
