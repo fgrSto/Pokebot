@@ -219,8 +219,7 @@ function UpdateInventory(bot, interaction, page, totalPage, player) {
   interaction.message.components[2].components[2].data.custom_id = `close/${interaction.member.user.id}`
   interaction.message.components[2].components[3].data.custom_id = `arrow/${interaction.member.user.id}/r1/${page}`;
   interaction.message.components[2].components[4].data.custom_id = `arrow/${interaction.member.user.id}/r10/${page}`;
-  interaction.update({embeds: interaction.message.embeds,components: interaction.message.components,
-  });
+  interaction.update({embeds: interaction.message.embeds,components: interaction.message.components});
 }
 
 

@@ -11,6 +11,31 @@ const path = require("path");
 bot.commands = new Collection()
 bot.commandArray = []
 
+let listeProfiles = GetData("data") //updates profiles 
+listeProfiles.forEach(player => {
+  if(player.stats.trades == undefined) {
+    player.stats["trades"] = {
+      pokeSold: 0,
+      pokeBuy: 0,
+      trades: 0,
+    }
+  }
+  if(player.stats.combats == undefined) {
+    player.stats["combats"] = {
+      amical: {
+        total: 0,
+        win: 0,
+      },
+      raid: {
+        total: 0,
+        done: 0,
+        win: 0,
+      }
+    }
+  }
+});
+WriteData("data", listeProfiles)
+
 setInterval(() => {//update profiles
   if (value.lastProfil != null) {
     value.lasMsgProfil.edit(embedProfile(FindProfile(bot, value.lastProfil.id), value.lasMsgProfil.interaction.user.id));

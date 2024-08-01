@@ -19,6 +19,22 @@ class Profile {
         fab: 0,
         god: 0,
       },
+      trades: {
+        pokeSold: 0,
+        pokeBuy: 0,
+        trades: 0,
+      },
+      combats: {
+        amical: {
+          total: 0,
+          win: 0,
+        },
+        raid: {
+          total: 0,
+          done: 0,
+          win: 0,
+        }
+      },
       totalMoney: 0,
     };
     this.type = {

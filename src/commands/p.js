@@ -44,20 +44,20 @@ module.exports = {
 
     interaction.deferReply()
 
-    setTimeout(() => {
-        let photos = []
-        for (let i = 0; i < 6; i++) {
-            if (player.team[i]) {
-                photos.push(GetData("pokemons").find(pokemon => pokemon.id == player.team[i]).hires ? GetData("pokemons").find(pokemon => pokemon.id == player.team[i]).hires : GetData("pokemons").find(pokemon => pokemon.id == player.team[i]).thumbnail)
-            } else {
-                photos.push("https://i.imgur.com/9OIW87s.png")
-            }
-        }
-        combineImage(photos).then((image) => {
-            image.write('team.png',  () => {
-                SendProfile(player, interaction)
-            })
-        })
-    }, 700);
-    },
+    let photos = []
+    for (let i = 0; i < 6; i++) {
+      if (player.team[i]) {
+        photos.push(GetData("pokemons").find(pokemon => pokemon.id == player.team[i]).hires ? GetData("pokemons").find(pokemon => pokemon.id == player.team[i]).hires : GetData("pokemons").find(pokemon => pokemon.id == player.team[i]).thumbnail)
+      } else {
+        photos.push("https://i.imgur.com/9OIW87s.png")  
+      }
+    }
+    combineImage(photos).then((image) => {
+      image.write('team.png',  () => {
+        setTimeout(() => {
+          SendProfile(player, interaction)
+        }, 500);
+      })
+    })
+  },
 };
