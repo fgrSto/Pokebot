@@ -82,4 +82,30 @@ function FindRarity(pokemon) {
   }
 }
 
-module.exports = { CatchPoke, FindRarity };
+function findColor(poke) {
+  let color = ""
+  switch (FindRarity(poke).stat) {
+    case "god":
+      color = `🟠 `;
+      break;
+
+    case "fab":
+      color = `🟣 `;
+      break;
+
+    case "legend":
+      color = `🟡 `;
+      break;
+
+    case "ultBeast":
+      color = `🟢 `;
+      break;
+
+    case "standard":
+      color = `⚪ `;
+      break;
+  }
+  return color
+}
+
+module.exports = { CatchPoke, FindRarity, findColor };

@@ -28,7 +28,7 @@ module.exports = {
           DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })
         ),
         new Date(player.lastCatch)
-      ) >= 21600 //21600s = 6h
+      ) >= 1 //21600s = 6h
     ) {
       let pokemon = CatchPoke();
       player.inventory.push(pokemon.id);

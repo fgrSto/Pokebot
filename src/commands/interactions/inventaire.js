@@ -6,13 +6,11 @@ const {
   CheckPerms,
 } = require("../../controller/controller");
 const { GetData } = require("../../controller/controllerData");
-const { FindRarity } = require("../../controller/controllerPokemon");
+const { FindRarity, findColor } = require("../../controller/controllerPokemon");
 const { SendError } = require("../../controller/controllerMessages");
 
-function Inventaire(bot, interaction, page) {
-  let player = FindProfile(bot, interaction.member.id);
+function sortPoke(array) {
   let pokemons = GetData("pokemons");
-  let listPoke = []
   let resultArrays = {
     god: [],
     fab: [],
@@ -21,7 +19,7 @@ function Inventaire(bot, interaction, page) {
     standard: [],
   };
 
-  player.inventory.forEach((pokeId) => {
+  array.forEach((pokeId) => {
     let pokemon = pokemons.find((pokemon) => pokemon.id == pokeId);
     resultArrays[FindRarity(pokemon).stat].push(pokemon);
   });
@@ -39,49 +37,35 @@ function Inventaire(bot, interaction, page) {
     });
   }
 
-  let endArray = resultArrays.god.concat(
+  return resultArrays.god.concat(
     resultArrays.fab,
     resultArrays.legend,
     resultArrays.ultBeast,
     resultArrays.standard
   );
+}
+
+function Inventaire(bot, interaction, page) {
+  let player = FindProfile(bot, interaction.member.id);
 
   let startRange = 25 * page - 25;
   let nbPokemon = getNumOfTimes(player.inventory);
   let endMsg = "";
+  let pokeRarList = []
 
+  let endArray = sortPoke(player.inventory)
   endArray = removeDuplicates(endArray);
 
   for (let p = startRange; p < endArray.length; p++) {
     if (p >= startRange + 25) break;
-    switch (FindRarity(endArray[p]).stat) {
-      case "god":
-        endMsg += `🟠 `;
-        break;
-
-      case "fab":
-        endMsg += `🟣 `;
-        break;
-
-      case "legend":
-        endMsg += `🟡 `;
-        break;
-
-      case "ultBeast":
-        endMsg += `🟢 `;
-        break;
-
-      case "standard":
-        endMsg += `⚪ `;
-        break;
-    }
-    endMsg += `[${endArray[p].name.french}](<https://www.pokepedia.fr/${endArray[p].name.french}>) (x ${nbPokemon[endArray[p].id]})\n`;
-    listPoke.push({label: endArray[p].name.french, value: endArray[p].id.toString()})
+    endMsg += `${findColor(endArray[p])} [${endArray[p].name.french}](<https://www.pokepedia.fr/${endArray[p].name.french}>) (x ${nbPokemon[endArray[p].id]})\n`;
+    pokeRarList.push({label: `${findColor(endArray[p])} ${endArray[p].name.french}`, value: endArray[p].id.toString()})
   }
+  
   return {
     inventory: endMsg,
     page: page,
-    pokemon: listPoke
+    pokemonsRarityList: pokeRarList
   };
 }
 
@@ -117,14 +101,14 @@ function SendInventory(bot, interaction, page) {
     new StringSelectMenuBuilder()
     .setCustomId(`sell/${interaction.member.user.id}`)
     .setPlaceholder(`🏷️ Vendre un Pokémon`)
-    .setOptions(Inventaire(bot, interaction, page).pokemon)
+    .setOptions(Inventaire(bot, interaction, 1).pokemonsRarityList)
   )
 
   let teamButtons = new ActionRowBuilder().addComponents(
     new StringSelectMenuBuilder()
     .setCustomId(`team/${interaction.member.user.id}`)
     .setPlaceholder(`📥 Ajouter à l'équipe`)
-    .setOptions(Inventaire(bot, interaction, page).pokemon)
+    .setOptions(Inventaire(bot, interaction, 1).pokemonsRarityList)
   )
 
   if (player.inventory.length == 0) {
@@ -224,6 +208,7 @@ function UpdateInventory(bot, interaction, page, totalPage, player) {
 
 
 module.exports = {
+  sortPoke,
   Inventaire,
   SendInventory,
   InventoryTurnPages,
