@@ -9,7 +9,7 @@ function SellPokemon(bot, interaction) {
 
     let pokemon = interaction.customId.split("/")[2] ? interaction.customId.split("/")[2] : interaction.values[0]
     let pokemons = GetData("pokemons").find(poke => poke.id == pokemon)
-    let player = FindProfile(bot, interaction.customId.split("/")[1])
+    let player = FindProfile( interaction.customId.split("/")[1])
     let listeProfiles = GetData("data");
     let price = FindRarity(pokemons).price
 

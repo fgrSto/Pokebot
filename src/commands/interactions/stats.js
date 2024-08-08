@@ -5,7 +5,7 @@ const { SendError } = require("../../controller/controllerMessages");
 function ShowStats(bot, interaction) {
   if(interaction.customId.split("/")[3] ? (interaction.member.id != interaction.customId.split("/")[3]) : false) return SendError("Action impossible", interaction)
 
-  let player = FindProfile(bot, interaction.customId.split("/")[1]);
+  let player = FindProfile( interaction.customId.split("/")[1]);
   let page = interaction.customId.split("/")[2]
   let embed = new EmbedBuilder()
     .setAuthor({name: `Statistiques de ${player.displayName}`, iconURL: `https://cdn.discordapp.com/avatars/${player.id}/${player.avatar}.png`})

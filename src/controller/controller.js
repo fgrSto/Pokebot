@@ -6,7 +6,7 @@ const { DateTime } = require("luxon");
 const value = require("../value");
 const { Bagdes } = require("../badges");
 
-function FindProfile(bot, id) {
+function FindProfile(id) {
   let listeProfiles = GetData("data");
   return listeProfiles.find((player) => player.id == id);
 }
@@ -25,22 +25,67 @@ function toHHMMSS(secs) {
   return `${hours}h${minutes < 10 ? `0${minutes}` : minutes}`;
 }
 
-function CheckSucces(bot, interaction, player, pokemon, listeProfiles) {
-  let prevTeam = [...player.team]
-  player.team.sort(function(a, b) {return a - b}).toString()
-  Succes(player, pokemon).forEach((succ) => {
-    if (succ.cond && !player.succes.includes(succ.id)) {
-      SendSucces(succ, interaction);
-      player.succes.push(succ.id);
+function checkAuctions(listeProfiles, interaction) {
+  let pokemons = GetData("pokemons")
 
-      for (let i = 0; i < listeProfiles.length; i++) {
-        if (listeProfiles[i].id == player.id) {
-          listeProfiles[i] = player;
+  listeProfiles.forEach(profile => {
+    profile.trades.forEach(trade => {
+      if(timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(trade.time)) >= 172800) {
+        let poke = pokemons.find(poke => poke.name.french == trade.name.split(" ")[1])
+        let author = FindProfile( trade.author)
+        let player = FindProfile( trade.bestBetPlayer)
+        
+        if(trade.bestBetPlayer == trade.author) {
+          author.inventory.push(poke.id)
+        }else{
+          player.inventory.push(poke.id)
+
+          player.money -= trade.price
+          author.money += trade.price
+          author.stats.totalMoney += trade.price
+          player.stats.trades.trades ++
+          player.stats.trades.pokeBuy ++
+          author.stats.trades.pokeSold ++
+        }
+
+        author.trades = author.trades.filter(echange => (echange.pokeId != trade.pokeId) && (echange.name != trade.name))
+        
+        for (let i = 0; i < listeProfiles.length; i++) {
+          if (listeProfiles[i].id == player.id) {
+            listeProfiles[i] = player;
+          }
+          if(listeProfiles[i].id == author.id) {
+            listeProfiles[i] = author;
+          }
+        }
+        listeProfiles = CheckSucces(interaction, player, {id: 0}, listeProfiles)
+        listeProfiles = CheckSucces(interaction, author, {id: 0}, listeProfiles)
+      }
+    });
+  });
+  WriteData("data", listeProfiles);  
+  return listeProfiles
+}
+
+function CheckSucces(interaction, player, pokemon, listeProfiles) {
+  
+  if(player.team.length != 0) {
+    let prevTeam = [...player.team]
+    player.team.sort(function(a, b) {return a - b}).toString()
+    Succes(player, pokemon).forEach((succ) => {
+      if (succ.cond && !player.succes.includes(succ.id)) {
+        SendSucces(succ, interaction);
+        player.succes.push(succ.id);
+  
+        for (let i = 0; i < listeProfiles.length; i++) {
+          if (listeProfiles[i].id == player.id) {
+            listeProfiles[i] = player;
+          }
         }
       }
-    }
-  });
-  player.team = prevTeam
+    });
+    player.team = prevTeam
+  }
 
   Bagdes(player).forEach((badge) => {
     let bestPlayer = null
@@ -136,7 +181,7 @@ function embedProfile(user, interactionUserId) {
         .setDescription(user.badges == [] ? "\u200b" : `${badges.join(" ")} \n \u200b`)
         .addFields(
           { name: `Argent 💵`, value: `${user.money} $`, inline: true },
-          { name: `Prochain catch <:Pokeball:1265664986034995255>`, value:timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(user.lastCatch)) <= 21600 ? `🔴 ${toHHMMSS(21600 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(user.lastCatch)))}` : `🟢 Disponible`,inline: true },
+          { name: `Prochain catch <:Pokeball:1265664986034995255>`, value: timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(user.lastCatch)) <= 21600 ? `🔴 ${toHHMMSS(21600 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(user.lastCatch)))}` : `🟢 Disponible`,inline: true },
           { name: `Succès 🏆`, value: `${user.succes.length} / ${Succes(user).length}`, inline: true },
           { name: "\u200b", value: `**Équipe :**` }
         )
@@ -181,6 +226,7 @@ module.exports = {
   FindProfile,
   timeBetween,
   toHHMMSS,
+  checkAuctions,
   CheckSucces,
   SendProfile,
   embedProfile,

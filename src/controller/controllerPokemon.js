@@ -86,23 +86,23 @@ function findColor(poke) {
   let color = ""
   switch (FindRarity(poke).stat) {
     case "god":
-      color = `🟠 `;
+      color = `🟠`;
       break;
 
     case "fab":
-      color = `🟣 `;
+      color = `🟣`;
       break;
 
     case "legend":
-      color = `🟡 `;
+      color = `🟡`;
       break;
 
     case "ultBeast":
-      color = `🟢 `;
+      color = `🟢`;
       break;
 
     case "standard":
-      color = `⚪ `;
+      color = `⚪`;
       break;
   }
   return color

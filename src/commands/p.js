@@ -21,12 +21,12 @@ module.exports = {
 
     
     if (interaction.options._hoistedOptions[0]) {
-      player = FindProfile(bot, interaction.options._hoistedOptions[0].user.id);
+      player = FindProfile( interaction.options._hoistedOptions[0].user.id);
       if (!player) {
         SendError("**Joueur introuvable**", interaction);
       }
     } else {
-      player = FindProfile(bot, interaction.member.user.id);
+      player = FindProfile( interaction.member.user.id);
       if (!player) {
         player = new Profile(interaction.member);
         listeProfiles.push(player);

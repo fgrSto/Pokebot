@@ -5,7 +5,7 @@ const fs = require('fs');
 const { commandHandler } = require("./src/commandHandler.js");
 const { GetData, WriteData } = require("./src/controller/controllerData.js");
 const value = require("./src/value.js");
-const { embedProfile, FindProfile } = require("./src/controller/controller.js");
+const { embedProfile, FindProfile, checkAuctions } = require("./src/controller/controller.js");
 const path = require("path");
 
 bot.commands = new Collection()
@@ -38,7 +38,7 @@ WriteData("data", listeProfiles)
 
 setInterval(() => {//update profiles
   if (value.lastProfil != null) {
-    value.lasMsgProfil.edit(embedProfile(FindProfile(bot, value.lastProfil.id), value.lasMsgProfil.interaction.user.id));
+    value.lasMsgProfil.edit(embedProfile(FindProfile(value.lastProfil.id), value.lasMsgProfil.interaction.user.id));
   }
 }, 30000);
 

@@ -49,6 +49,9 @@ function commandHandler(bot, interaction) {
     case "team":
       bot.commands.get("team").run(bot, interaction)
       break
+    case "auction":
+      bot.commands.get("auction").run(bot, interaction)
+      break
   }
 }
 

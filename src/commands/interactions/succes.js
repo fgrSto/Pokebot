@@ -5,7 +5,7 @@ const { Succes } = require("../../succes");
 const { Bagdes } = require("../../badges");
 
 function ShowSucces(bot, interaction, page) {
-  let player = FindProfile(bot, interaction.customId.split("/")[interaction.customId.split("/")[4] ? 4 : 1]);
+  let player = FindProfile( interaction.customId.split("/")[interaction.customId.split("/")[4] ? 4 : 1]);
   let startRange = 10 * page - 20;
   let succesMsg = "";
   let badgesMsg = "";
@@ -36,7 +36,7 @@ function ShowSucces(bot, interaction, page) {
 }
 
 function SuccesSend(bot, interaction, page) {
-  let player = FindProfile(bot, interaction.customId.split("/")[1]);
+  let player = FindProfile( interaction.customId.split("/")[1]);
   let totalPage = Math.ceil(Succes(player, 0).length / 10) + 1;
 
   let listButtons = new ActionRowBuilder().addComponents(
@@ -110,7 +110,7 @@ function SuccesTurnPages(bot, interaction) {
   let arrow = interaction.customId.split("/")[2];
   let page = parseInt(interaction.customId.split("/")[3]);
 
-  let player = FindProfile(bot, interaction.customId.split("/")[1]);
+  let player = FindProfile( interaction.customId.split("/")[1]);
   let totalPage = Math.ceil(Succes(player, 0).length / 10) + 1;
 
   switch (arrow) {
@@ -141,7 +141,7 @@ function SuccesTurnPages(bot, interaction) {
       }
       break;
   }
-  UpdateSucces(bot, interaction, page, totalPage, FindProfile(bot, interaction.customId.split("/")[4]));
+  UpdateSucces(bot, interaction, page, totalPage, FindProfile( interaction.customId.split("/")[4]));
 }
 
 function UpdateSucces(bot, interaction, page, totalPage, player) {

@@ -28,7 +28,7 @@ module.exports = {
         .setRequired(false)),
         
     async run(bot, interaction) {      
-      let player = FindProfile(bot, interaction.member.user.id);
+      let player = FindProfile( interaction.member.user.id);
       let listeProfiles = GetData("data");
       let pokemons = GetData("pokemons")
       let paramsAdd = interaction.options ? interaction.options._hoistedOptions.find(option => option.name == "add") : interaction.customId.split("/")[2] == "add" ? {name: "add", value: interaction.values[0]} : undefined
@@ -96,7 +96,7 @@ module.exports = {
             }
           }
         } else {
-          let watchedPlayer = FindProfile(bot, interaction.options._hoistedOptions.find(option => option.name == "joueur") ? interaction.options._hoistedOptions.find(option => option.name == "joueur").user.id : player.id);
+          let watchedPlayer = FindProfile( interaction.options._hoistedOptions.find(option => option.name == "joueur") ? interaction.options._hoistedOptions.find(option => option.name == "joueur").user.id : player.id);
           if (!watchedPlayer) return SendError("Joueur introuvable", interaction)
           interaction.deferReply()
 
@@ -164,7 +164,7 @@ module.exports = {
             listeProfiles[i] = player;
           }
         }
-        listeProfiles = CheckSucces(bot, interaction, player, {id: 0}, listeProfiles)
+        listeProfiles = CheckSucces(interaction, player, {id: 0}, listeProfiles)
         WriteData("data", listeProfiles);
        }
     }

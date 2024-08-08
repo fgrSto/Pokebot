@@ -16,7 +16,7 @@ module.exports = {
     if (CheckPerms(interaction) == false) return;
 
     let listeProfiles = GetData("data");
-    let player = FindProfile(bot, interaction.member.user.id);
+    let player = FindProfile( interaction.member.user.id);
 
     if (!player) {
       player = new Profile(interaction.member);
@@ -49,7 +49,7 @@ module.exports = {
           }
         }
       
-      listeProfiles = CheckSucces(bot,interaction,player,pokemon,listeProfiles);
+      listeProfiles = CheckSucces(interaction,player,pokemon,listeProfiles);
       WriteData("data", listeProfiles);
 
       let listButtons = new ActionRowBuilder().addComponents(

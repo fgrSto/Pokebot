@@ -46,7 +46,7 @@ function sortPoke(array) {
 }
 
 function Inventaire(bot, interaction, page) {
-  let player = FindProfile(bot, interaction.member.id);
+  let player = FindProfile( interaction.member.id);
 
   let startRange = 25 * page - 25;
   let nbPokemon = getNumOfTimes(player.inventory);
@@ -71,7 +71,7 @@ function Inventaire(bot, interaction, page) {
 
 function SendInventory(bot, interaction, page) {
   if (!CheckPerms(interaction)) return 
-  let player = FindProfile(bot, interaction.member.id);
+  let player = FindProfile( interaction.member.id);
   let totalPage = Math.ceil(removeDuplicates(player.inventory).length / 25);
 
   let listButtons = new ActionRowBuilder().addComponents(
@@ -160,7 +160,7 @@ function InventoryTurnPages(bot, interaction) {
   let arrow = interaction.customId.split("/")[2];
   let page = parseInt(interaction.customId.split("/")[3]);
 
-  let player = FindProfile(bot, interaction.member.id);
+  let player = FindProfile( interaction.member.id);
   let totalPage = Math.ceil(removeDuplicates(player.inventory).length / 25);
 
   switch (arrow) {
