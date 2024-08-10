@@ -42,28 +42,34 @@ module.exports = {
       let filteredChoices = choices.filter(choice => choice.name.toLowerCase().includes(focusedOption.value.toLowerCase())).slice(0, 25)      
       await interaction.respond(filteredChoices.map(choice => ({ name: choice.name, value: choice.value.toString()})))
     }else{
-      let listeProfiles = GetData("data")
-      listeProfiles = checkAuctions(listeProfiles, interaction)
-
       if(interaction.options._hoistedOptions.length == 0) { //Voir les enchères  
-        let listeEnchère = []
+        let optionsEncheres = []
+        let listeEncheres = []
+        let listeId = []
         let msgAuction = ""
         let n = 0
+        let listeProfiles = GetData("data")
         
         listeProfiles.forEach(profil => {
           if(profil.trades.length > 0 && n <= 25) {
             if(n == 25) {
               msgAuction += "(...)"
             }else{
-              msgAuction += `**__${player.displayName}__**:\n`
               profil.trades.forEach(trade => {
-                listeEnchère.push({label: trade.name, value: trade.pokeId.toString()})
-                msgAuction += trade.name + ": `" +  trade.price + " 💵` " + `(__${FindProfile( trade.bestBetPlayer).displayName}__)\nTemps restant: ` + "`" + toHHMMSS(172800 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(trade.time))) + "`\n\n"
+                listeEncheres.push(trade)
+                listeId.push(trade.pokeId)
                 n ++
               });
             }
           }
         });
+
+        listeId = sortPoke(listeId)
+        for (let i = 0; i < listeEncheres.length; i++) {
+          let trade = listeEncheres.find(enchere => enchere.pokeId == listeId[i].id)
+          optionsEncheres.push({label: trade.name, value: trade.id})
+          msgAuction += `**${trade.name}** de ${FindProfile(trade.author).displayName}` + " `" +  (trade.history.length > 0 ? trade.history[trade.history.length - 1].amount : trade.price) + " 💵`\n> Meilleur prix: " + `*${FindProfile(trade.bestBetPlayer).displayName}*\n> Temps restant: ` + "`" + toHHMMSS(172800 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(trade.time))) + "`\n\n"
+        }
 
         if(msgAuction == "") {
           msgAuction = "Aucun pokémons n'ést aux enchères"
@@ -76,14 +82,14 @@ module.exports = {
           .setColor("#00b0f4")
         ],
         fetchReply: true,
-        components: [new ActionRowBuilder()
+        components: optionsEncheres.length != 0 ? [new ActionRowBuilder()
           .addComponents(
             new StringSelectMenuBuilder()
             .setCustomId(`bet/${interaction.member.id}`)
-            .setOptions(listeEnchère)
+            .setOptions(optionsEncheres)
             .setPlaceholder("Ajouter a la mise")
           )
-        ]
+        ] : []
 
       }).then(sent => {
         setTimeout(() => {
@@ -101,8 +107,18 @@ module.exports = {
         
         let index = player.inventory.indexOf(parseInt(pokemon.id))
         if (index > -1) {
+          let idExist
+          let id = 0
           player.inventory.splice(index, 1)
-          player.trades.push({author: player.id, pokeId: pokemon.id, name:`${findColor(pokemon)} ${pokemon.name.french}`, price: interaction.options._hoistedOptions.find(option => option.name == "prix").value, bestBetPlayer: player.id, time: new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false }))})
+
+          do {
+            id = Math.floor(Math.random() * 1000) + 1
+            idExist = listeProfiles.some(joueur =>
+              joueur.trades.some(trade => trade.id == id)
+            )
+          } while (idExist);
+
+          player.trades.push({id: id.toString() , history: [], author: player.id, pokeId: pokemon.id, name:`${findColor(pokemon)} ${pokemon.name.french}`, price: interaction.options._hoistedOptions.find(option => option.name == "prix").value, bestBetPlayer: player.id, time: new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false }))})
           SendNotError(`**${pokemons.find(poke => poke.id == pokemon.id).name.french}** a été ajouté aux enchères`, interaction)
         } else {
           return SendError(`Ce pokémon est déjà aux enchères`, interaction)

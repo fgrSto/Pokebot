@@ -46,7 +46,7 @@ function sortPoke(array) {
 }
 
 function Inventaire(bot, interaction, page) {
-  let player = FindProfile( interaction.member.id);
+  let player = FindProfile(interaction.member.id);
 
   let startRange = 25 * page - 25;
   let nbPokemon = getNumOfTimes(player.inventory);
@@ -196,13 +196,14 @@ function InventoryTurnPages(bot, interaction) {
 
 function UpdateInventory(bot, interaction, page, totalPage, player) {
   interaction.message.embeds[0].data.description = `**${player.inventory.length}** pokémons\n\n${Inventaire(bot, interaction, page).inventory}`;interaction.message.embeds[0].data.footer.text = `${Inventaire(bot, interaction, page).page} / ${totalPage}`;
-  interaction.message.components[0].components[0].data.options = Inventaire(bot, interaction, page).pokemon
-  interaction.message.components[1].components[0].data.options = Inventaire(bot, interaction, page).pokemon
+  interaction.message.components[0].components[0].data.options = Inventaire(bot, interaction, page).pokemonsRarityList
+  interaction.message.components[1].components[0].data.options = Inventaire(bot, interaction, page).pokemonsRarityList
   interaction.message.components[2].components[0].data.custom_id = `arrow/${interaction.member.user.id}/l10/${page}`;
   interaction.message.components[2].components[1].data.custom_id = `arrow/${interaction.member.user.id}/l1/${page}`;
   interaction.message.components[2].components[2].data.custom_id = `close/${interaction.member.user.id}`
   interaction.message.components[2].components[3].data.custom_id = `arrow/${interaction.member.user.id}/r1/${page}`;
   interaction.message.components[2].components[4].data.custom_id = `arrow/${interaction.member.user.id}/r10/${page}`;
+ 
   interaction.update({embeds: interaction.message.embeds,components: interaction.message.components});
 }
 

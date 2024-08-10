@@ -20,15 +20,21 @@ function SendNotError(message, interaction) {
   });
 }
 
-function SendSucces(succ, interaction) {
+function SendSucces(succ, interaction, bot) {
+  let embed = {embeds: [new EmbedBuilder()
+    .setColor("#ffdd00")
+    .setTitle(`**► __${succ.name}__ ◄**`)
+    .setAuthor({name: `${interaction.member.user.globalName} a débloqué un succès`, iconURL: `https://cdn.discordapp.com/avatars/${interaction.member.id}/${interaction.member.user.avatar}.png`})
+    .setDescription(`> *${succ.desc}*`)
+    .setThumbnail("https://i.imgur.com/4dGt5Aj.gif")
+  ]}
+
   setTimeout(() => {
-    interaction.channel.send({embeds: [new EmbedBuilder()
-      .setColor("#ffdd00")
-      .setTitle(`**► __${succ.name}__ ◄**`)
-      .setAuthor({name: `${interaction.member.user.globalName} a débloqué un succès`, iconURL: `https://cdn.discordapp.com/avatars/${interaction.member.id}/${interaction.member.user.avatar}.png`})
-      .setDescription(`> *${succ.desc}*`)
-      .setThumbnail("https://i.imgur.com/4dGt5Aj.gif")
-    ]})
+    if(interaction == undefined) {
+      bot.channels.cache.get(process.env.TEST_CHAN).send(embed)
+    }else{
+      interaction.channel.send(embed)
+    }
   }, 500);
 }
 

@@ -22,19 +22,27 @@ function toHHMMSS(secs) {
   var hours = Math.floor(sec_num / 3600);
   var minutes = Math.floor(sec_num / 60) % 60;
 
-  return `${hours}h${minutes < 10 ? `0${minutes}` : minutes}`;
+  return `${hours}h${minutes < 10 ? `0${minutes}` : minutes}m`;
 }
 
-function checkAuctions(listeProfiles, interaction) {
+function checkAuctions(bot) {
+  let listeProfiles = GetData("data")
   let pokemons = GetData("pokemons")
 
   listeProfiles.forEach(profile => {
     profile.trades.forEach(trade => {
       if(timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(trade.time)) >= 172800) {
         let poke = pokemons.find(poke => poke.name.french == trade.name.split(" ")[1])
-        let author = FindProfile( trade.author)
-        let player = FindProfile( trade.bestBetPlayer)
-        
+        let author = FindProfile(trade.author)
+        let player = FindProfile(trade.bestBetPlayer)
+        let n = 0
+        do {
+          if(player.money < trade.history[n].amount) {
+            player = FindProfile(trade.history[n].id)
+            n++
+          }
+        } while (player.money < trade.history[n].amount);
+
         if(trade.bestBetPlayer == trade.author) {
           author.inventory.push(poke.id)
         }else{
@@ -58,23 +66,22 @@ function checkAuctions(listeProfiles, interaction) {
             listeProfiles[i] = author;
           }
         }
-        listeProfiles = CheckSucces(interaction, player, {id: 0}, listeProfiles)
-        listeProfiles = CheckSucces(interaction, author, {id: 0}, listeProfiles)
+        listeProfiles = CheckSucces(undefined, player, {id: 0}, listeProfiles, bot)
+        listeProfiles = CheckSucces(undefined, author, {id: 0}, listeProfiles, bot)
       }
     });
   });
   WriteData("data", listeProfiles);  
-  return listeProfiles
 }
 
-function CheckSucces(interaction, player, pokemon, listeProfiles) {
+function CheckSucces(interaction, player, pokemon, listeProfiles, bot = undefined) {
   
   if(player.team.length != 0) {
     let prevTeam = [...player.team]
     player.team.sort(function(a, b) {return a - b}).toString()
     Succes(player, pokemon).forEach((succ) => {
       if (succ.cond && !player.succes.includes(succ.id)) {
-        SendSucces(succ, interaction);
+        SendSucces(succ, interaction, bot);
         player.succes.push(succ.id);
   
         for (let i = 0; i < listeProfiles.length; i++) {

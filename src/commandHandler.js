@@ -1,3 +1,4 @@
+const { showBet, addBet } = require("./commands/interactions/bet");
 const { InventoryTurnPages, SendInventory } = require("./commands/interactions/inventaire");
 const { SellPokemon } = require("./commands/interactions/sell");
 const { ShowStats } = require("./commands/interactions/stats");
@@ -52,6 +53,13 @@ function commandHandler(bot, interaction) {
     case "auction":
       bot.commands.get("auction").run(bot, interaction)
       break
+    case "bet":
+      showBet(interaction)
+      break
+    case "addBet":
+      addBet(interaction)
+      break
+    
   }
 }
 
