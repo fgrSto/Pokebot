@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder } = require("discord.js");
 const { findColor } = require("../controller/controllerPokemon");
 const { removeDuplicates, FindProfile, timeBetween, CheckSucces, toHHMMSS, checkAuctions } = require("../controller/controller");
 const { sortPoke } = require("./interactions/inventaire");
@@ -42,13 +42,13 @@ module.exports = {
       let filteredChoices = choices.filter(choice => choice.name.toLowerCase().includes(focusedOption.value.toLowerCase())).slice(0, 25)      
       await interaction.respond(filteredChoices.map(choice => ({ name: choice.name, value: choice.value.toString()})))
     }else{
+      let listeProfiles = GetData("data")
       if(interaction.options._hoistedOptions.length == 0) { //Voir les enchères  
         let optionsEncheres = []
         let listeEncheres = []
         let listeId = []
         let msgAuction = ""
         let n = 0
-        let listeProfiles = GetData("data")
         
         listeProfiles.forEach(profil => {
           if(profil.trades.length > 0 && n <= 25) {
@@ -80,22 +80,30 @@ module.exports = {
           .setDescription(msgAuction)
           .setThumbnail("https://i.imgur.com/9OIW87s.png")
           .setColor("#00b0f4")
-        ],
-        fetchReply: true,
-        components: optionsEncheres.length != 0 ? [new ActionRowBuilder()
-          .addComponents(
-            new StringSelectMenuBuilder()
-            .setCustomId(`bet/${interaction.member.id}`)
-            .setOptions(optionsEncheres)
-            .setPlaceholder("Ajouter a la mise")
-          )
-        ] : []
-
-      }).then(sent => {
-        setTimeout(() => {
-            sent.delete()
-        }, 300000);
-      });
+          ],
+          components: optionsEncheres.length != 0 ? [new ActionRowBuilder()
+            .addComponents(
+              new StringSelectMenuBuilder()
+              .setCustomId(`bet/${interaction.member.id}`)
+              .setOptions(optionsEncheres)
+              .setPlaceholder("Ajouter a la mise")
+            ),
+            new ActionRowBuilder()
+            .addComponents(
+              new ButtonBuilder()
+              .setCustomId(`close/${interaction.member.user.id}`)
+              .setLabel("❌")
+              .setStyle("Secondary"),
+            )
+          ] : [new ActionRowBuilder()
+            .addComponents(
+              new ButtonBuilder()
+              .setCustomId(`close/${interaction.member.user.id}`)
+              .setLabel("❌")
+              .setStyle("Secondary"),
+            )
+          ]
+        })
 
       }else{
         if(interaction.options._hoistedOptions.length != 2) return SendError("Le **prix** ou le **pokémon** n'est pas spécifié !", interaction)

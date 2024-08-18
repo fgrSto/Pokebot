@@ -1,3 +1,4 @@
+const { acceptBuy } = require("./commands/interactions/acceptBuy");
 const { showBet, addBet } = require("./commands/interactions/bet");
 const { InventoryTurnPages, SendInventory } = require("./commands/interactions/inventaire");
 const { SellPokemon } = require("./commands/interactions/sell");
@@ -44,7 +45,7 @@ function commandHandler(bot, interaction) {
       if (!CheckPerms(interaction)) return
       close(bot, interaction);
       break
-    case "sell":
+    case "vendre":
       SellPokemon(bot, interaction);
     break
     case "team":
@@ -58,6 +59,12 @@ function commandHandler(bot, interaction) {
       break
     case "addBet":
       addBet(interaction)
+      break
+    case "sell":
+      bot.commands.get("sell").run(bot, interaction)
+      break
+    case "acceptBuy":
+      acceptBuy(bot, interaction)
       break
     
   }

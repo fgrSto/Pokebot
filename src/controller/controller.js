@@ -34,39 +34,47 @@ function checkAuctions(bot) {
       if(timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(trade.time)) >= 172800) {
         let poke = pokemons.find(poke => poke.name.french == trade.name.split(" ")[1])
         let author = FindProfile(trade.author)
-        let player = FindProfile(trade.bestBetPlayer)
-        let n = 0
-        do {
-          if(player.money < trade.history[n].amount) {
-            player = FindProfile(trade.history[n].id)
-            n++
-          }
-        } while (player.money < trade.history[n].amount);
-
-        if(trade.bestBetPlayer == trade.author) {
-          author.inventory.push(poke.id)
-        }else{
+        
+        if(trade.history.length > 0) {
+          let player = FindProfile(trade.bestBetPlayer)
+          let n = 0
+          
+          do {
+            if(player.money < trade.history[n].amount) {
+              player = FindProfile(trade.history[n].id)
+              n++
+            }
+          } while (player.money < trade.history[n].amount);
+          
           player.inventory.push(poke.id)
-
+          
           player.money -= trade.price
           author.money += trade.price
           author.stats.totalMoney += trade.price
           player.stats.trades.trades ++
           player.stats.trades.pokeBuy ++
           author.stats.trades.pokeSold ++
+
+          author.trades = author.trades.filter(echange => (echange.pokeId != trade.pokeId) && (echange.name != trade.name))
+
+          for (let i = 0; i < listeProfiles.length; i++) {
+            if(listeProfiles[i].id == player.id) {
+              listeProfiles[i] = player;
+            }
+          }
+          
+          listeProfiles = CheckSucces(undefined, player, {id: 0}, listeProfiles, bot)
+        } else {
+          author.inventory.push(poke.id)
+          author.trades = author.trades.filter(echange => (echange.pokeId != trade.pokeId) && (echange.name != trade.name))
         }
 
-        author.trades = author.trades.filter(echange => (echange.pokeId != trade.pokeId) && (echange.name != trade.name))
-        
         for (let i = 0; i < listeProfiles.length; i++) {
-          if (listeProfiles[i].id == player.id) {
-            listeProfiles[i] = player;
-          }
           if(listeProfiles[i].id == author.id) {
             listeProfiles[i] = author;
           }
         }
-        listeProfiles = CheckSucces(undefined, player, {id: 0}, listeProfiles, bot)
+        
         listeProfiles = CheckSucces(undefined, author, {id: 0}, listeProfiles, bot)
       }
     });

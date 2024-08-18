@@ -54,7 +54,7 @@ module.exports = {
 
       let listButtons = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
-          .setCustomId(`sell/${interaction.member.user.id}/${pokemon.id}`)
+          .setCustomId(`vendre/${interaction.member.user.id}/${pokemon.id}`)
           .setLabel(`🏷️ Vendre ce Pokémon`)
           .setStyle("Secondary"),
         )

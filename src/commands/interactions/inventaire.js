@@ -99,7 +99,7 @@ function SendInventory(bot, interaction, page) {
 
   let sellButtons = new ActionRowBuilder().addComponents(
     new StringSelectMenuBuilder()
-    .setCustomId(`sell/${interaction.member.user.id}`)
+    .setCustomId(`vendre/${interaction.member.user.id}`)
     .setPlaceholder(`🏷️ Vendre un Pokémon`)
     .setOptions(Inventaire(bot, interaction, 1).pokemonsRarityList)
   )

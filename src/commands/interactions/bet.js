@@ -4,15 +4,10 @@ const { FindProfile, toHHMMSS, timeBetween, CheckSucces } = require("../../contr
 const { DateTime } = require("luxon");
 const { SendError, SendNotError } = require("../../controller/controllerMessages");
 
-function showBet(interaction) {
-  let bet = findBet(interaction.values[0])
-  if(!bet) return SendError("Action impossible", interaction)
-  let player = FindProfile(interaction.member.id)
-  let poke = GetData("pokemons").find(poke => poke.id == bet.pokeId)
-
+function betDescription(player, bet) {
   let description = ""
 
-  if(player.id != bet.bestBetPlayer) {
+  if(player.id == bet.bestBetPlayer) { // a changer avant de push par "=="
     description += `*Personne n'a ajouté de mise sur ce pokémon*\n\nPrix actuel : ` + "`" + bet.price + " 💵`\nTemps restant : `" + toHHMMSS(172800 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(bet.time))) + "`"
   }else{
     description += `Gagnant actuel : **${FindProfile(bet.bestBetPlayer).displayName}**\nEnchère actuelle : ` + "`" + (bet.history.length > 0 ? bet.history[bet.history.length - 1].amount : bet.price) + " 💵`\nTemps restant : **" + toHHMMSS(172800 - timeBetween(new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), new Date(bet.time))) + "**\n"
@@ -26,6 +21,17 @@ function showBet(interaction) {
       }
     }
   }
+
+  return description
+}
+
+function showBet(interaction) {
+  let bet = findBet(interaction.values[0])
+  if(!bet) return SendError("Action impossible", interaction)
+  let player = FindProfile(interaction.member.id)
+  let poke = GetData("pokemons").find(poke => poke.id == bet.pokeId)
+
+  let description = betDescription(player, bet)
 
   let btn = new ActionRowBuilder()
     .addComponents(
@@ -90,7 +96,7 @@ function addBet(interaction) {
   let listeProfiles = GetData("data")
 
   if(!player) return SendError("Tu n'as pas de profil", interaction)
-  //if(bet.author == player.id) return SendError("Action impossible", interaction)
+  if(bet.author == player.id) return SendError("Action impossible", interaction)
   if(bet.price + augmentation > player.money) return SendError("Tu n'as pas assez d'argent", interaction)
 
   bet.history.push({id: player.id, name: player.displayName, time: new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), amount: augmentation + parseInt(bet.history.length > 0 ? bet.history[bet.history.length - 1].amount : bet.price)})
@@ -98,7 +104,18 @@ function addBet(interaction) {
   
   tradeAuthor.trades[tradeAuthor.trades.findIndex(Bet => Bet.id == bet.id)] = bet
   
-  SendNotError(`Vous avez augmenter l'enchère a ${bet.history[bet.history.length - 1].amount}`, interaction)
+  interaction.message.embeds[0].data.description = betDescription(player, bet)
+  interaction.update({embeds: interaction.message.embeds,components: interaction.message.components});
+  
+  interaction.channel.send({embeds: [new EmbedBuilder()
+    .setDescription(`**${player.displayName}** a augmenté l'enchère de **${bet.name}** à **${bet.history[bet.history.length - 1].amount} 💵**`)
+    .setColor("Green")
+  ],fetchReply: true})
+  .then(sent => {
+    setTimeout(() => {
+        sent.delete()
+    }, 3000);
+  });
 
   for (let i = 0; i < listeProfiles.length; i++) {
     if (listeProfiles[i].id == player.id) {
