@@ -67,6 +67,7 @@ module.exports = {
         
         if ((paramsAdd ? paramsAdd.name == "add" : false)) {
           if (!pokemons.find(pokemon => pokemon.id == paramsAdd.value)) return SendError("Pokémon introuvable", interaction)
+          if (player.team.some(id => id == parseInt(paramsAdd.value))) return SendError("Pokémon déjà dans l'équipe", interaction)
           if (player.team.length >= 6) {
             SendError("L'équipe est complète", interaction)
             return
@@ -106,27 +107,25 @@ module.exports = {
             team.push({label: `${findColor(poke)} ${poke.name.french}`, value: poke.id.toString()})
           }
 
-          let teamButtons = null
+          let teamButtons = []
+          
+
           if(team.length > 0) {
-             teamButtons = [new ActionRowBuilder().addComponents(
-              new StringSelectMenuBuilder()
-              .setCustomId(`team/${interaction.member.user.id}/add`)
-              .setPlaceholder(`📥 Ajouter à l'équipe`)
-              .setOptions(Inventaire(bot, interaction, 1).pokemonsRarityList)
-            ),
-            new ActionRowBuilder().addComponents(
+            teamButtons.push (new ActionRowBuilder().addComponents(
               new StringSelectMenuBuilder()
               .setCustomId(`team/${interaction.member.user.id}/remove`)
               .setPlaceholder(`❌ Retirer de l'équipe`)
               .setOptions(team)
-            )]
-          }else{
-            teamButtons = [new ActionRowBuilder().addComponents(
+            ))
+          }
+
+          if (player.inventory.length > 0) {
+            teamButtons.push (new ActionRowBuilder().addComponents(
               new StringSelectMenuBuilder()
               .setCustomId(`team/${interaction.member.user.id}/add`)
               .setPlaceholder(`📥 Ajouter à l'équipe`)
               .setOptions(Inventaire(bot, interaction, 1).pokemonsRarityList)
-            )]
+            ))
           }
 
 

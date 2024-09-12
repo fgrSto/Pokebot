@@ -35,7 +35,7 @@ function SendSucces(succ, interaction, bot) {
     }else{
       interaction.channel.send(embed)
     }
-  }, 500);
+  }, 1000);
 }
 
 function close(bot, interaction) {

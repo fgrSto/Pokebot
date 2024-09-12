@@ -45,7 +45,7 @@ function ShowStats(bot, interaction) {
           value: ">>> Total: `" + player.stats.totalCatch.total + "`\nGods: `" + player.stats.totalCatch.god + "`\nUltra Beast: `" + player.stats.totalCatch.ultBeast + "`\nFabuleux: `" + player.stats.totalCatch.fab + "`\nLégendaires: `" + player.stats.totalCatch.legend + "`\nStandards: `" + player.stats.totalCatch.standard + "`"
         },{
           name: "__Trades__ 🏷️",
-          value: ">>> Ventes Totales: `" + (player.stats.totalCatch.total - (player.inventory.length + player.team.length)) + "`\nVentes au jeu: `" + (player.stats.totalCatch.total - (player.inventory.length + player.team.length) - player.stats.trades.pokeSold) + "`\nVentes aux joueurs: `" + player.stats.trades.pokeSold + "`\nAchats aux joueurs: `" + player.stats.trades.pokeBuy + "`\nÉchanges: `" + player.stats.trades.trades + "`"
+          value: ">>> Ventes Totales: `" + (player.stats.totalCatch.total - (player.inventory.length + player.team.length + player.trades.length) + player.stats.trades.pokeBuy) + "`\nVentes au jeu: `" + (player.stats.totalCatch.total - (player.inventory.length + player.team.length + player.trades.length) - player.stats.trades.pokeSold + player.stats.trades.pokeBuy) + "`\nVentes aux joueurs: `" + player.stats.trades.pokeSold + "`\nAchats aux joueurs: `" + player.stats.trades.pokeBuy + "`\nÉchanges: `" + player.stats.trades.trades + "`"
         }
       )
   }else if(page == "combat") {
@@ -62,7 +62,7 @@ function ShowStats(bot, interaction) {
     embed.addFields(
       {
         name: "__Type de pokémons__ 🐹",
-        value: ">>> Bug: `" + player.type.Bug + "` \nDark: `" + player.type.Dark + "` \nDragon: `" + player.type.Dragon + "` \nÉlectrique: `" + player.type.Electric + "` \nFairy: `" + player.type.Fairy + "` \nFighting: `" + player.type.Fighting + "` \nFire: `" + player.type.Fire + "` \nFlying: `" + player.type.Flying + "` \nGhost: `" + player.type.Ghost + "` \nGrass: `" + player.type.Grass + "` \nGround: `" + player.type.Ground + "` \nIce: `" + player.type.Ice + "` \nNormal: `" + player.type.Normal + "` \nPoison: `" + player.type.Poison + "` \nPsychic: `" + player.type.Psychic + "` \nRock: `" + player.type.Rock + "` \nSteel: `" + player.type.Steel + "` \nWater: `" + player.type.Water + "`"
+        value: ">>> Bug: `" + player.type.Bug + "` \nDark: `" + player.type.Dark + "` \nDragon: `" + player.type.Dragon + "` \nÉlectrique: `" + player.type.Electric + "` \nFairy: `" + player.type.Fairy + "` \nFighting: `" + player.type.Fighting + "` \nFire: `" + player.type.Fire + "` \nFlying: `" + player.type.Flying + "` \nGhost: `" + player.type.Ghost + "` \nGrass: `" + player.type.Grass + "` \nGround: `" + player.type.Ground + "` \nIce: `" + player.type.Ice + "` \nNormal: `" + player.type.Normal + "` \nPoison: `" + player.type.Poison + "` \nPsychic: `" + player.type.Psychic + "` \nRock: `" + player.type.Rock + "` \nSteel: `" + player.type.Steel + "` \nWater: `" + player.type.Water + "`" 
       }
     )
   }
@@ -71,7 +71,7 @@ function ShowStats(bot, interaction) {
     interaction.reply({
       embeds: [ embed ],
       components: [listButtons, closeBtn],
-      fetchReply: true,
+      fetchReply: true
     }).then(sent => {
       setTimeout(() => {
           sent.delete()

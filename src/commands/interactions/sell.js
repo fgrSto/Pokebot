@@ -12,6 +12,7 @@ function SellPokemon(bot, interaction) {
     let player = FindProfile( interaction.customId.split("/")[1])
     let listeProfiles = GetData("data");
     let price = FindRarity(pokemons).price
+    if(!player) return SendError("PTDR T KI", interaction)
 
     let index = player.inventory.indexOf(parseInt(pokemon))
     if (index > -1) {

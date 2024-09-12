@@ -35,31 +35,33 @@ module.exports = {
     let player = FindProfile(interaction.member.user.id);
 
     if(interaction.isAutocomplete()) {
-      let focusedOption = interaction.options.getFocused(true)
-      let choices = []
-      
-      if(focusedOption.name == "pokémon") {
-        let listeInv = sortPoke(player.inventory)
-        listeInv = removeDuplicates(listeInv)
+      if (player) {
+        let focusedOption = interaction.options.getFocused(true)
+        let choices = []
         
-        listeInv.forEach(poke => {
-          choices.push({name: `${findColor(poke)} ${poke.name.french}`, value: poke.id})
-        });
-        
-        let filteredChoices = choices.filter(choice => choice.name.toLowerCase().includes(focusedOption.value.toLowerCase())).slice(0, 25)      
-        await interaction.respond(filteredChoices.map(choice => ({ name: choice.name, value: choice.value.toString()})))
+        if(focusedOption.name == "pokémon") {
+          let listeInv = sortPoke(player.inventory)
+          listeInv = removeDuplicates(listeInv)
+          
+          listeInv.forEach(poke => {
+            choices.push({name: `${findColor(poke)} ${poke.name.french}`, value: poke.id})
+          });
+          
+          let filteredChoices = choices.filter(choice => choice.name.toLowerCase().includes(focusedOption.value.toLowerCase())).slice(0, 25)      
+          await interaction.respond(filteredChoices.map(choice => ({ name: choice.name, value: choice.value.toString()})))
 
-      }else if(focusedOption.name == "echange"){
-        let listePoke = GetData("pokemons")
-        listePoke = listePoke.map(a => a.id)
-        listePoke = sortPoke(listePoke)
+        }else if(focusedOption.name == "echange"){
+          let listePoke = GetData("pokemons")
+          listePoke = listePoke.map(a => a.id)
+          listePoke = sortPoke(listePoke)
 
-        listePoke.forEach(poke => {
-          choices.push({name: `${findColor(poke)} ${poke.name.french}`, value: poke.id})
-        });
-        
-        let filteredChoices = choices.filter(choice => choice.name.toLowerCase().includes(focusedOption.value.toLowerCase())).slice(0, 25)      
-        await interaction.respond(filteredChoices.map(choice => ({ name: choice.name, value: choice.value.toString()})))
+          listePoke.forEach(poke => {
+            choices.push({name: `${findColor(poke)} ${poke.name.french}`, value: poke.id})
+          });
+          
+          let filteredChoices = choices.filter(choice => choice.name.toLowerCase().includes(focusedOption.value.toLowerCase())).slice(0, 25)      
+          await interaction.respond(filteredChoices.map(choice => ({ name: choice.name, value: choice.value.toString()})))
+        }
       }
     }else{
 

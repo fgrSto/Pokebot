@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require("discord.js");
 const { GetData, WriteData } = require("../../controller/controllerData");
 const { FindProfile, toHHMMSS, timeBetween, CheckSucces } = require("../../controller/controller");
 const { DateTime } = require("luxon");
-const { SendError, SendNotError } = require("../../controller/controllerMessages");
+const { SendError } = require("../../controller/controllerMessages");
 
 function betDescription(player, bet) {
   let description = ""
@@ -95,16 +95,16 @@ function addBet(interaction) {
   let tradeAuthor = FindProfile(bet.author)
   let listeProfiles = GetData("data")
 
-  if(!player) return SendError("Tu n'as pas de profil", interaction)
+  if(!player) return SendError("PTDR T KI", interaction)
   if(bet.author == player.id) return SendError("Action impossible", interaction)
-  if(bet.price + augmentation > player.money) return SendError("Tu n'as pas assez d'argent", interaction)
+  if(bet.price + augmentation > player.money) return SendError("Va voir ton banquier avant", interaction)
 
   bet.history.push({id: player.id, name: player.displayName, time: new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false })), amount: augmentation + parseInt(bet.history.length > 0 ? bet.history[bet.history.length - 1].amount : bet.price)})
   bet.bestBetPlayer = player.id
   
   tradeAuthor.trades[tradeAuthor.trades.findIndex(Bet => Bet.id == bet.id)] = bet
   
-  interaction.message.embeds[0].data.description = betDescription(player, bet)
+  interaction.message.embeds[0].data.description = betDescription(tradeAuthor, bet)
   interaction.update({embeds: interaction.message.embeds,components: interaction.message.components});
   
   interaction.channel.send({embeds: [new EmbedBuilder()

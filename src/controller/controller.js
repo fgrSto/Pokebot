@@ -37,23 +37,24 @@ function checkAuctions(bot) {
         
         if(trade.history.length > 0) {
           let player = FindProfile(trade.bestBetPlayer)
-          let n = 0
+          let n = trade.history.length - 1
           
           do {
             if(player.money < trade.history[n].amount) {
               player = FindProfile(trade.history[n].id)
-              n++
+              n--
             }
           } while (player.money < trade.history[n].amount);
           
           player.inventory.push(poke.id)
           
-          player.money -= trade.price
-          author.money += trade.price
-          author.stats.totalMoney += trade.price
+          author.money += trade.history[n].amount
+          author.stats.totalMoney += trade.history[n].amount
+          author.stats.trades.pokeSold ++
+
+          player.money -= trade.history[n].amount
           player.stats.trades.trades ++
           player.stats.trades.pokeBuy ++
-          author.stats.trades.pokeSold ++
 
           author.trades = author.trades.filter(echange => (echange.pokeId != trade.pokeId) && (echange.name != trade.name))
 
@@ -62,6 +63,13 @@ function checkAuctions(bot) {
               listeProfiles[i] = player;
             }
           }
+
+          bot.channels.cache.get(process.env.TEST_CHAN).send({embeds: [new EmbedBuilder() 
+            .setColor("Green")
+            .setTitle(`**► __ENCHÈRE TERMINÉ !__ ◄**`)
+            .setDescription(`>>> Pokémon : **${poke.name.french}** \n Acheteur : **${player.displayName}**\n Vendeur : **${author.displayName}**\n Prix : **${trade.history[n].amount} 💵**`)
+            .setThumbnail(poke.hires ? poke.hires : poke.thumbnail)
+          ]})
           
           listeProfiles = CheckSucces(undefined, player, {id: 0}, listeProfiles, bot)
         } else {
@@ -74,7 +82,6 @@ function checkAuctions(bot) {
             listeProfiles[i] = author;
           }
         }
-        
         listeProfiles = CheckSucces(undefined, author, {id: 0}, listeProfiles, bot)
       }
     });
