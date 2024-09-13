@@ -19,9 +19,9 @@ function acceptBuy(bot, interaction) {
   }else{
     targetPlayer = FindProfile(interaction.member.id)
   }
-
+  
   if(interaction.customId.split("/")[3] == "price") {
-    price = parseInt(interaction.customId.split("/")[3])
+    price = parseInt(interaction.customId.split("/")[4])
     if(targetPlayer.money >= price) {
       targetPlayer.money -= price
       targetPlayer.inventory.push(pokemon.id)

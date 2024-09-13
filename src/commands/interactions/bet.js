@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require("discord.js");
 const { GetData, WriteData } = require("../../controller/controllerData");
-const { FindProfile, toHHMMSS, timeBetween, CheckSucces } = require("../../controller/controller");
+const { FindProfile, toHHMMSS, timeBetween, CheckSucces, CheckPerms } = require("../../controller/controller");
 const { DateTime } = require("luxon");
 const { SendError } = require("../../controller/controllerMessages");
 
@@ -26,6 +26,8 @@ function betDescription(player, bet) {
 }
 
 function showBet(interaction) {
+  if (!CheckPerms(interaction)) return console.log("merde");
+  
   let bet = findBet(interaction.values[0])
   if(!bet) return SendError("Action impossible", interaction)
   let player = FindProfile(interaction.member.id)
@@ -110,12 +112,7 @@ function addBet(interaction) {
   interaction.channel.send({embeds: [new EmbedBuilder()
     .setDescription(`**${player.displayName}** a augmenté l'enchère de **${bet.name}** à **${bet.history[bet.history.length - 1].amount} 💵**`)
     .setColor("Green")
-  ],fetchReply: true})
-  .then(sent => {
-    setTimeout(() => {
-        sent.delete()
-    }, 3000);
-  });
+  ]});
 
   for (let i = 0; i < listeProfiles.length; i++) {
     if (listeProfiles[i].id == player.id) {

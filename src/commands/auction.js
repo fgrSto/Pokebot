@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder } = require("discord.js");
 const { findColor } = require("../controller/controllerPokemon");
-const { removeDuplicates, FindProfile, timeBetween, CheckSucces, toHHMMSS, checkAuctions } = require("../controller/controller");
+const { removeDuplicates, FindProfile, timeBetween, CheckSucces, toHHMMSS, CheckPerms } = require("../controller/controller");
 const { sortPoke } = require("./interactions/inventaire");
 const { GetData, WriteData } = require("../controller/controllerData");
 const { DateTime } = require("luxon");
@@ -72,7 +72,7 @@ module.exports = {
         }
 
         if(msgAuction == "") {
-          msgAuction = "Aucun pokémons n'ést aux enchères"
+          msgAuction = "Aucun pokémons n'est aux enchères"
         }
         
         interaction.reply({embeds: [new EmbedBuilder()
