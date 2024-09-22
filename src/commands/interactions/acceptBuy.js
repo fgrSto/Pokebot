@@ -32,7 +32,10 @@ function acceptBuy(bot, interaction) {
   }else{
     echange = pokemons.find(pokemon => pokemon.id == interaction.customId.split("/")[4])
     if(targetPlayer.inventory.includes(echange.id)) {
+      let index = targetPlayer.inventory.indexOf(parseInt(echange.id))
       targetPlayer.inventory.push(pokemon.id)
+      targetPlayer.inventory.splice(index, 1)
+      author.inventory.push(echange.id)
 
     }else return SendError("Tu n'as pas le pokémon pour faire l'échange", interaction)
   } 

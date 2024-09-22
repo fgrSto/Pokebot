@@ -127,7 +127,12 @@ module.exports = {
           } while (idExist);
 
           player.trades.push({id: id.toString() , history: [], author: player.id, pokeId: pokemon.id, name:`${findColor(pokemon)} ${pokemon.name.french}`, price: interaction.options._hoistedOptions.find(option => option.name == "prix").value, bestBetPlayer: player.id, time: new Date(DateTime.now().setZone("Europe/Paris").toISO({ includeOffset: false }))})
-          SendNotError(`**${pokemons.find(poke => poke.id == pokemon.id).name.french}** a été ajouté aux enchères`, interaction)
+          interaction.reply({
+            embeds: [
+              new EmbedBuilder()
+              .setDescription(`**${pokemons.find(poke => poke.id == pokemon.id).name.french}** a été ajouté aux enchères`)
+              .setColor("Green")]
+          });
         } else {
           return SendError(`Ce pokémon est déjà aux enchères`, interaction)
         }

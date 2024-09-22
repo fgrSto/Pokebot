@@ -74,7 +74,7 @@ module.exports = {
       let pokemon = pokemons.find(pokemon => pokemon.id == interaction.options._hoistedOptions.find(option => option.name == "pokémon").value)
 
       if(!pokemon) return SendError("Pokémon introuvable", interaction)
-      let desc = `**${player.displayName}** veux vendre **${pokemon.name.french}** `
+      let desc = `**${player.displayName}** veut vendre **${pokemon.name.french}** `
 
       if(interaction.options._hoistedOptions.some(option => option.name == "joueur")) {
         targetPlayer = FindProfile(interaction.options._hoistedOptions.find(option => option.name == "joueur").value)
