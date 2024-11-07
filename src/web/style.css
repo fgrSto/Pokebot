@@ -1,0 +1,122 @@
+body {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.title {
+  width: 100%;
+  text-align: center;
+}
+
+.playerBoard {
+  height: fit-content;
+  min-height: 40px;
+  max-height: 80vh;
+  width: 90%;
+  border: solid black 1px;
+  padding-right: 16px;
+  margin: 0px 20px;
+  margin-bottom: 100px;
+  overflow-y: scroll;
+  box-sizing: border-box;
+}
+
+.boardHeadName {
+  flex-basis: 40%;
+  margin: 0px;
+  margin-left: 10px;
+  height: 40px;
+}
+
+.playerBoard .boardElement:not(:first-child) {
+  border-top: solid gray 1px;
+}
+
+.boardElement {
+  display: flex;
+  height: 40px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  width: 90%;
+  box-sizing: border-box;
+}
+
+.head {
+  position: relative;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  margin: 0px;
+  background-color: rgb(156, 156, 156);
+  border: solid black 1px;
+  box-sizing: border-box;
+}
+
+.col {
+  overflow: hidden;
+  white-space: nowrap;
+  align-items: center;
+  border-right: solid black 1px;
+  background-color: rgb(228, 228, 228);
+}
+
+.colJoueur {
+  display: flex;
+  flex-basis: 20%;
+  min-width: 20%;
+}
+
+.colBadges {
+  display: flex;
+  flex-basis: 10%;
+  min-width: 10%;
+}
+
+.name {
+  box-sizing: border-box;
+  padding-left: 5px;
+  margin: 0px;
+}
+
+.badges {
+  justify-content: center;
+  box-sizing: border-box;
+  gap: 5px;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+}
+
+.imgBadge {
+  height: 80%;
+  border-radius: 4px;
+}
+
+.badgeName {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: white;
+  opacity: 0;
+  transition-duration: 0.5s;
+}
+
+.badgeName:hover{
+  opacity: 1;
+}
